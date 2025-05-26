@@ -1,4 +1,4 @@
-# IMD_4 - Ghost_kitchen
+# IMD_4 - Ghost_Kitchen
 
 Ghost_kitchen은 셰프가 음식을 만들어 유령을 제거하는 디펜스 형식의 VR 게임입니다.
 Unity 2022.3.7f1 기반으로 개발되었습니다.
