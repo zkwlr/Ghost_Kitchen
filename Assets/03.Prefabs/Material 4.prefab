@@ -335,13 +335,14 @@ MonoBehaviour:
   - {fileID: 3285499496103214931}
   - {fileID: 5967597781202171208}
   detectionRadius: 0.1
-  ingredientScaleOnSkewer: {x: 0.1, y: 0.1, z: 0.1}
+  ingredientScaleOnSkewer: {x: 0.08, y: 0.08, z: 0.08}
   slotIndicators:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   availableSlotMaterial: {fileID: 0}
   occupiedSlotMaterial: {fileID: 0}
+  autoUpdateBounds: 1
 --- !u!1 &3420216713429492747
 GameObject:
   m_ObjectHideFlags: 0
