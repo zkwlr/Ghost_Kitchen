@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1092741472892007374}
   - component: {fileID: 1092741472892007375}
   - component: {fileID: 1092741472892007372}
-  - component: {fileID: -6353872852139858262}
+  - component: {fileID: 5725125627397686699}
   m_Layer: 0
   m_Name: LG_01
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 621650582822661403}
@@ -50,7 +50,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -81,11 +81,11 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6353872852139858262
+--- !u!114 &5725125627397686699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1092741472892007369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44b8e1d0ed1c9f4e9d87e469d8100bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cd408f3d10034949a54729c96b84da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3351842993058475750, guid: 1f7761b3ffb3cae468dbdfc8c565667c, type: 3}
-  moveSpeed: 3
+  targetHealth: {fileID: 0}
+  moveSpeed: 2
   attackRange: 1.5
-  attackInterval: 1
+  attackInterval: 2
+  damageAmount: 1
 --- !u!1001 &1092741471585585904
 PrefabInstance:
   m_ObjectHideFlags: 0

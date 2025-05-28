@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2130614856811000643}
   - component: {fileID: 8283113905126510163}
   - component: {fileID: 7717517249216736903}
+  - component: {fileID: -573750013429491537}
   m_Layer: 0
   m_Name: Well
   m_TagString: Untagged
@@ -106,3 +107,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8012563891942627399, guid: 5201fc6f09e52f04ba3b97655e439fb7, type: 3}
+--- !u!114 &-573750013429491537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486848753486269657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85149ba861643dd40ba870e84379decb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  initialHealth: -1

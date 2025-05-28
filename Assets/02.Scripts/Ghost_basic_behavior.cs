@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class EnemyFollowAndAttack : MonoBehaviour
 {
+    [Header("í”Œë ˆì´ì–´ Transform")]
     public Transform player;
-    public float moveSpeed = 3f;
-    public float attackRange = 1.5f; // °ø°İ ½ÃÀÛ °Å¸®
-    public float attackInterval = 1f; // °ø°İ ÁÖ±â(ÃÊ)
-    private float attackTimer = 0f;
 
+    [Header("ì´ë™ ì†ë„")]
+    public float moveSpeed = 3f;
+
+    [Header("ê³µê²© ë²”ìœ„")]
+    public float attackRange = 1.5f; // ê³µê²© ì‹œì‘ ê±°ë¦¬
+
+    [Header("ê³µê²© ê°„ê²© (ì´ˆ)")]
+    public float attackInterval = 1f; // ì—°ì† ê³µê²© ì‚¬ì´ ëŒ€ê¸° ì‹œê°„
+
+    private float attackTimer = 0f;
     private bool isAttacking = false;
 
     void Update()
@@ -18,14 +25,14 @@ public class EnemyFollowAndAttack : MonoBehaviour
 
         if (distance > attackRange)
         {
-            // ÀÌµ¿
+            // í”Œë ˆì´ì–´ë¥¼ í–¥í•´ ì´ë™
             isAttacking = false;
             transform.LookAt(player);
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
         else
         {
-            // °ø°İ
+            // ì‚¬ì •ê±°ë¦¬ ë‚´, ê³µê²© ëª¨ë“œë¡œ ì „í™˜
             isAttacking = true;
             AttackPlayer();
         }
@@ -37,9 +44,9 @@ public class EnemyFollowAndAttack : MonoBehaviour
         if (attackTimer >= attackInterval)
         {
             attackTimer = 0f;
-            // °ø°İ ·ÎÁ÷ (¿¹½Ã: µ¥¹ÌÁö ÁÖ±â)
-            Debug.Log("ÇÃ·¹ÀÌ¾î °ø°İ!");
-            // player.GetComponent<PlayerHealth>().TakeDamage(°ø°İ·Â); ¿Í °°ÀÌ ±¸Çö °¡´É
+            // ì‹¤ì œ ê³µê²© ì²˜ë¦¬ (ì˜ˆ: ë°ë¯¸ì§€ ì ìš©)
+            Debug.Log("í”Œë ˆì´ì–´ ê³µê²©!");
+            // player.GetComponent<PlayerHealth>().TakeDamage(ê³µê²©ë ¥);
         }
     }
 }
