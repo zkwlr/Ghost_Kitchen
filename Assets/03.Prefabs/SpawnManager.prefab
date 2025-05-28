@@ -55,5 +55,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  player: {fileID: 0}
-  spawnInterval: 3
+  spawnInterval: 4
