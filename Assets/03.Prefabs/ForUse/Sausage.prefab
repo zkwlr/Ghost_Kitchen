@@ -26,17 +26,17 @@ PrefabInstance:
     - target: {fileID: 200355668039852096, guid: a1e7126b78c286248b29f182402a3bdf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.1541
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 200355668039852096, guid: a1e7126b78c286248b29f182402a3bdf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.102
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 200355668039852096, guid: a1e7126b78c286248b29f182402a3bdf,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 200355668039852096, guid: a1e7126b78c286248b29f182402a3bdf,
         type: 3}
@@ -259,6 +259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeSlots: 1
   ingredientType: 0
+  originalScale: {x: 0.2, y: 0.35, z: 0.35}
+  skewerScale: {x: 0.2, y: 0.35, z: 0.35}
   isOnSkewer: 0
   currentSkewer: {fileID: 0}
   startSlotIndex: -1
