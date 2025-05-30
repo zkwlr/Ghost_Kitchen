@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: a05f126abb188c844b96a6e89c2c3679,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a05f126abb188c844b96a6e89c2c3679,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a05f126abb188c844b96a6e89c2c3679,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a05f126abb188c844b96a6e89c2c3679,
         type: 3}
@@ -321,6 +321,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeSlots: 1
   ingredientType: 0
+  originalScale: {x: 3, y: 3, z: 3}
+  skewerScale: {x: 3, y: 3, z: 3}
   isOnSkewer: 0
   currentSkewer: {fileID: 0}
   startSlotIndex: -1

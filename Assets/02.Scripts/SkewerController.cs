@@ -7,10 +7,9 @@ public class SkewerController : MonoBehaviour
 {
     [Header("Skewer Settings")]
     public Transform[] slotPositions = new Transform[3];
-    public float detectionRadius = 0.3f;
 
-    [Header("Ingredient Settings")]
-    public Vector3 ingredientScaleOnSkewer = new Vector3(0.1f, 0.1f, 0.1f);
+    [Header("Detection Settings")]
+    public Vector3 detectionBoxSize = new Vector3(0.3f, 0.3f, 2.0f); // 꼬치보다 조금 크게
 
     [Header("Visual Feedback")]
     public GameObject[] slotIndicators = new GameObject[3];
@@ -18,15 +17,13 @@ public class SkewerController : MonoBehaviour
     public Material occupiedSlotMaterial;
 
     [Header("Physics Settings")]
-    public bool autoUpdateBounds = true; // 자동으로 경계 업데이트
+    public bool autoUpdateBounds = true;
 
     private bool[] occupiedSlots = new bool[3];
     private List<GameObject> attachedIngredients = new List<GameObject>();
     private XRGrabInteractable skewerGrab;
     private Rigidbody skewerRigidbody;
     private BoxCollider physicsCollider;
-    private BoxCollider triggerCollider;
-    private Vector3 lastParentScale;
 
     void Start()
     {
@@ -36,28 +33,17 @@ public class SkewerController : MonoBehaviour
         UpdateSlotVisuals();
         SetupColliders();
         EnsureSkewerPhysics();
-
-        lastParentScale = transform.lossyScale;
     }
 
     private void SetupColliders()
     {
-        Collider[] existingColliders = GetComponents<Collider>();
-
-        // 물리용 콜라이더 (첫 번째)
-        if (existingColliders.Length > 0)
+        // 기존 Box Collider는 물리용으로 유지
+        physicsCollider = GetComponent<BoxCollider>();
+        if (physicsCollider != null)
         {
-            physicsCollider = existingColliders[0] as BoxCollider;
-            if (physicsCollider != null)
-            {
-                physicsCollider.isTrigger = false;
-            }
+            physicsCollider.isTrigger = false;
+            // 꼬치 실제 크기 유지 (예: 0.1, 0.1, 1.5)
         }
-
-        // 트리거용 콜라이더 추가 (두 번째)
-        triggerCollider = gameObject.AddComponent<BoxCollider>();
-        triggerCollider.isTrigger = true;
-        triggerCollider.size = new Vector3(0.5f, 0.5f, 2.0f);
 
         // 물리 콜라이더가 없으면 생성
         if (physicsCollider == null)
@@ -65,6 +51,188 @@ public class SkewerController : MonoBehaviour
             physicsCollider = gameObject.AddComponent<BoxCollider>();
             physicsCollider.isTrigger = false;
             physicsCollider.size = new Vector3(0.1f, 0.1f, 1.5f);
+        }
+    }
+
+    private void EnsureSkewerPhysics()
+    {
+        if (skewerRigidbody == null)
+        {
+            skewerRigidbody = gameObject.AddComponent<Rigidbody>();
+        }
+
+        skewerRigidbody.mass = 0.1f;
+        skewerRigidbody.drag = 1f;
+        skewerRigidbody.angularDrag = 5f;
+
+        if (skewerGrab == null)
+        {
+            skewerGrab = gameObject.AddComponent<XRGrabInteractable>();
+        }
+
+        skewerGrab.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+    }
+
+    void Update()
+    {
+        // 꼬치가 잡혀있을 때만 재료 감지
+        if (skewerGrab != null && skewerGrab.isSelected)
+        {
+            CheckForIngredientsInRange();
+        }
+    }
+
+    private void CheckForIngredientsInRange()
+    {
+        // Physics.OverlapBox로 Detection Range 내 재료 찾기
+        Collider[] nearbyColliders = Physics.OverlapBox(
+            transform.position,                    // 중심점
+            detectionBoxSize * 0.5f,              // 반 크기
+            transform.rotation                     // 회전
+        );
+
+        foreach (Collider col in nearbyColliders)
+        {
+            IngredientItem ingredient = col.GetComponent<IngredientItem>();
+            if (ingredient != null && !ingredient.isOnSkewer)
+            {
+                XRGrabInteractable ingredientGrab = ingredient.GetComponent<XRGrabInteractable>();
+
+                if (ingredientGrab != null && ingredientGrab.isSelected)
+                {
+                    if (AreDifferentHands(skewerGrab, ingredientGrab))
+                    {
+                        TryAttachIngredient(ingredient);
+                    }
+                }
+            }
+        }
+    }
+
+    private bool AreDifferentHands(XRGrabInteractable skewer, XRGrabInteractable ingredient)
+    {
+        var skewerInteractor = skewer.firstInteractorSelecting;
+        var ingredientInteractor = ingredient.firstInteractorSelecting;
+
+        if (skewerInteractor != null && ingredientInteractor != null)
+        {
+            return skewerInteractor != ingredientInteractor;
+        }
+        return false;
+    }
+
+    public bool TryAttachIngredient(IngredientItem originalIngredient)
+    {
+        int requiredSlots = originalIngredient.sizeSlots;
+        int availableStartSlot = FindAvailableSlots(requiredSlots);
+
+        if (availableStartSlot != -1)
+        {
+            for (int i = 0; i < requiredSlots; i++)
+            {
+                occupiedSlots[availableStartSlot + i] = true;
+            }
+
+            GameObject newIngredient = CreateIngredientCopy(originalIngredient, availableStartSlot);
+            attachedIngredients.Add(newIngredient);
+
+            Destroy(originalIngredient.gameObject);
+
+            UpdateSlotVisuals();
+            TriggerHapticFeedback();
+
+            if (autoUpdateBounds)
+            {
+                UpdatePhysicsColliderToBounds();
+            }
+
+            Debug.Log($"Ingredient attached to slot {availableStartSlot}");
+            return true;
+        }
+
+        return false;
+    }
+
+    private GameObject CreateIngredientCopy(IngredientItem originalIngredient, int slotIndex)
+    {
+        GameObject newIngredient = Instantiate(originalIngredient.gameObject);
+
+        // 검색 결과 [1]의 방법: 부모를 null로 설정하고 스케일 설정 후 다시 부모 설정
+        Transform originalParent = transform;
+
+        // 1. 부모를 null로 설정
+        newIngredient.transform.SetParent(null);
+
+        // 2. 원하는 크기로 설정 (절대 크기)
+        IngredientItem ingredientScript = newIngredient.GetComponent<IngredientItem>();
+        if (ingredientScript != null)
+        {
+            newIngredient.transform.localScale = ingredientScript.skewerScale;
+        }
+
+        // 3. 위치 설정
+        newIngredient.transform.position = GetSlotPosition(slotIndex);
+        newIngredient.transform.rotation = GetSlotRotation();
+
+        // 4. 다시 부모 설정
+        newIngredient.transform.SetParent(originalParent);
+
+        // 나머지 컴포넌트 제거...
+        XRGrabInteractable grabComponent = newIngredient.GetComponent<XRGrabInteractable>();
+        if (grabComponent != null) Destroy(grabComponent);
+
+        Rigidbody rb = newIngredient.GetComponent<Rigidbody>();
+        if (rb != null) Destroy(rb);
+
+        Collider col = newIngredient.GetComponent<Collider>();
+        if (col != null) Destroy(col);
+
+        return newIngredient;
+    }
+
+
+
+    public void RemoveIngredient(GameObject ingredient, int startSlot, int sizeSlots)
+    {
+        if (attachedIngredients.Contains(ingredient))
+        {
+            // 재료 스크립트에 분리 알림
+            IngredientItem ingredientScript = ingredient.GetComponent<IngredientItem>();
+            if (ingredientScript != null)
+            {
+                ingredientScript.DetachFromSkewer();
+            }
+
+            for (int i = 0; i < sizeSlots; i++)
+            {
+                if (startSlot + i < occupiedSlots.Length)
+                {
+                    occupiedSlots[startSlot + i] = false;
+                }
+            }
+
+            attachedIngredients.Remove(ingredient);
+            Destroy(ingredient);
+            UpdateSlotVisuals();
+
+            if (autoUpdateBounds)
+            {
+                UpdatePhysicsColliderToBounds();
+            }
+        }
+    }
+
+    public void RemoveLastIngredient()
+    {
+        if (attachedIngredients.Count > 0)
+        {
+            GameObject lastIngredient = attachedIngredients[attachedIngredients.Count - 1];
+            IngredientItem ingredientScript = lastIngredient.GetComponent<IngredientItem>();
+
+            if (ingredientScript != null)
+            {
+                RemoveIngredient(lastIngredient, ingredientScript.startSlotIndex, ingredientScript.sizeSlots);
+            }
         }
     }
 
@@ -136,194 +304,11 @@ public class SkewerController : MonoBehaviour
         Debug.Log($"Physics collider updated - Center: {localCenter}, Size: {localSize}");
     }
 
-    private void EnsureSkewerPhysics()
-    {
-        if (skewerRigidbody == null)
-        {
-            skewerRigidbody = gameObject.AddComponent<Rigidbody>();
-        }
-
-        skewerRigidbody.mass = 0.1f;
-        skewerRigidbody.drag = 1f;
-        skewerRigidbody.angularDrag = 5f;
-
-        if (skewerGrab == null)
-        {
-            skewerGrab = gameObject.AddComponent<XRGrabInteractable>();
-        }
-
-        skewerGrab.movementType = XRBaseInteractable.MovementType.VelocityTracking;
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        IngredientItem ingredient = other.GetComponent<IngredientItem>();
-
-        if (ingredient != null && !ingredient.isOnSkewer)
-        {
-            XRGrabInteractable ingredientGrab = ingredient.GetComponent<XRGrabInteractable>();
-
-            if (skewerGrab != null && skewerGrab.isSelected &&
-                ingredientGrab != null && ingredientGrab.isSelected)
-            {
-                if (AreDifferentHands(skewerGrab, ingredientGrab))
-                {
-                    TryAttachIngredient(ingredient);
-                }
-            }
-        }
-    }
-
-    private bool AreDifferentHands(XRGrabInteractable skewer, XRGrabInteractable ingredient)
-    {
-        var skewerInteractor = skewer.firstInteractorSelecting;
-        var ingredientInteractor = ingredient.firstInteractorSelecting;
-
-        if (skewerInteractor != null && ingredientInteractor != null)
-        {
-            return skewerInteractor != ingredientInteractor;
-        }
-        return false;
-    }
-
-    public bool TryAttachIngredient(IngredientItem originalIngredient)
-    {
-        int requiredSlots = originalIngredient.sizeSlots;
-        int availableStartSlot = FindAvailableSlots(requiredSlots);
-
-        if (availableStartSlot != -1)
-        {
-            for (int i = 0; i < requiredSlots; i++)
-            {
-                occupiedSlots[availableStartSlot + i] = true;
-            }
-
-            GameObject newIngredient = CreateIngredientCopy(originalIngredient, availableStartSlot);
-            attachedIngredients.Add(newIngredient);
-
-            Destroy(originalIngredient.gameObject);
-
-            UpdateSlotVisuals();
-            TriggerHapticFeedback();
-
-            // 재료 추가 후 경계 업데이트
-            if (autoUpdateBounds)
-            {
-                UpdatePhysicsColliderToBounds();
-            }
-
-            Debug.Log($"Ingredient attached to slot {availableStartSlot}");
-            return true;
-        }
-
-        return false;
-    }
-
-    private GameObject CreateIngredientCopy(IngredientItem originalIngredient, int slotIndex)
-    {
-        GameObject newIngredient = Instantiate(originalIngredient.gameObject);
-
-        newIngredient.transform.SetParent(transform);
-        newIngredient.transform.position = GetSlotPosition(slotIndex);
-        newIngredient.transform.rotation = GetSlotRotation();
-
-        // 역스케일 적용
-        Vector3 parentLossyScale = transform.lossyScale;
-        Vector3 desiredWorldScale = ingredientScaleOnSkewer;
-
-        Vector3 inverseParentScale = new Vector3(
-            parentLossyScale.x != 0 ? desiredWorldScale.x / parentLossyScale.x : desiredWorldScale.x,
-            parentLossyScale.y != 0 ? desiredWorldScale.y / parentLossyScale.y : desiredWorldScale.y,
-            parentLossyScale.z != 0 ? desiredWorldScale.z / parentLossyScale.z : desiredWorldScale.z
-        );
-
-        newIngredient.transform.localScale = inverseParentScale;
-
-        // 상호작용 컴포넌트 제거 (Renderer는 유지!)
-        XRGrabInteractable grabComponent = newIngredient.GetComponent<XRGrabInteractable>();
-        if (grabComponent != null) Destroy(grabComponent);
-
-        Rigidbody rb = newIngredient.GetComponent<Rigidbody>();
-        if (rb != null) Destroy(rb);
-
-        Collider col = newIngredient.GetComponent<Collider>();
-        if (col != null) Destroy(col);
-
-        // IngredientItem 스크립트 설정
-        IngredientItem ingredientScript = newIngredient.GetComponent<IngredientItem>();
-        if (ingredientScript != null)
-        {
-            ingredientScript.isOnSkewer = true;
-            ingredientScript.currentSkewer = this;
-            ingredientScript.startSlotIndex = slotIndex;
-        }
-
-        return newIngredient;
-    }
-
-    public void RemoveIngredient(GameObject ingredient, int startSlot, int sizeSlots)
-    {
-        if (attachedIngredients.Contains(ingredient))
-        {
-            for (int i = 0; i < sizeSlots; i++)
-            {
-                if (startSlot + i < occupiedSlots.Length)
-                {
-                    occupiedSlots[startSlot + i] = false;
-                }
-            }
-
-            attachedIngredients.Remove(ingredient);
-            Destroy(ingredient);
-            UpdateSlotVisuals();
-
-            // 재료 제거 후 경계 업데이트
-            if (autoUpdateBounds)
-            {
-                UpdatePhysicsColliderToBounds();
-            }
-        }
-    }
-
-    // 수동으로 경계 업데이트 (버튼이나 특정 상황에서 호출)
+    // 수동으로 경계 업데이트
     [ContextMenu("Update Bounds")]
     public void ManualUpdateBounds()
     {
         UpdatePhysicsColliderToBounds();
-    }
-
-    public void UpdateIngredientScales()
-    {
-        foreach (GameObject ingredient in attachedIngredients)
-        {
-            if (ingredient != null)
-            {
-                Vector3 parentLossyScale = transform.lossyScale;
-                Vector3 desiredWorldScale = ingredientScaleOnSkewer;
-
-                Vector3 inverseParentScale = new Vector3(
-                    parentLossyScale.x != 0 ? desiredWorldScale.x / parentLossyScale.x : desiredWorldScale.x,
-                    parentLossyScale.y != 0 ? desiredWorldScale.y / parentLossyScale.y : desiredWorldScale.y,
-                    parentLossyScale.z != 0 ? desiredWorldScale.z / parentLossyScale.z : desiredWorldScale.z
-                );
-
-                ingredient.transform.localScale = inverseParentScale;
-            }
-        }
-    }
-
-    void Update()
-    {
-        if (lastParentScale != transform.lossyScale)
-        {
-            lastParentScale = transform.lossyScale;
-            UpdateIngredientScales();
-
-            if (autoUpdateBounds)
-            {
-                UpdatePhysicsColliderToBounds();
-            }
-        }
     }
 
     private void TriggerHapticFeedback()
@@ -382,6 +367,35 @@ public class SkewerController : MonoBehaviour
                     renderer.material = occupiedSlots[i] ? occupiedSlotMaterial : availableSlotMaterial;
                 }
             }
+        }
+    }
+
+    public List<GameObject> GetAttachedIngredients()
+    {
+        return new List<GameObject>(attachedIngredients);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Detection Range 시각화 (노란색)
+        Gizmos.color = Color.yellow;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, detectionBoxSize);
+
+        // 물리 콜라이더 시각화 (빨간색)
+        if (physicsCollider != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(physicsCollider.center, physicsCollider.size);
+        }
+
+        // 통합 경계 표시 (녹색)
+        if (Application.isPlaying)
+        {
+            Bounds combinedBounds = GetCombinedBounds();
+            Gizmos.color = Color.green;
+            Gizmos.matrix = Matrix4x4.identity;
+            Gizmos.DrawWireCube(combinedBounds.center, combinedBounds.size);
         }
     }
 }
