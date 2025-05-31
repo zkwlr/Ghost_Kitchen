@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5725125627397686699}
   m_Layer: 0
   m_Name: LG_01
-  m_TagString: Untagged
+  m_TagString: LG
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,10 +54,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.91122055
-  m_Height: 4.61405
+  m_Radius: 1.2567501
+  m_Height: 5.582264
   m_Direction: 1
-  m_Center: {x: -0.07067871, y: 2.4495535, z: 0.19918442}
+  m_Center: {x: -0.07067859, y: 2.9336634, z: 0.5447155}
 --- !u!54 &1092741472892007372
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &5725125627397686699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetHealth: {fileID: 0}
+  animator: {fileID: 1092741471497574698}
   moveSpeed: 2
   attackRange: 1.5
   attackInterval: 2
@@ -209,6 +210,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Little_Ghost
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f8c8b82560e0b8c4b9f992ac7993ab8d,
+        type: 3}
+      propertyPath: m_TagString
+      value: LG
       objectReference: {fileID: 0}
     - target: {fileID: 1440968675998706339, guid: f8c8b82560e0b8c4b9f992ac7993ab8d,
         type: 3}
