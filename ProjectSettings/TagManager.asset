@@ -5,16 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - Well
-  - LG
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ghost
+  - 
   - Water
   - UI
-  - Skewer
-  - Well
+  - 
+  - 
   - 
   - 
   - 
