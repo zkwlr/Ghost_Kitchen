@@ -35,9 +35,8 @@ public class ThrowCollisionDestroyer : MonoBehaviour
         }
 
         // ─── 폭발 이펙트를 배열에 담긴 모든 프리팹으로 생성 ───
-        for (int i = 0; i < explosionEffectPrefabs.Length; i++)
+        foreach (var prefab in explosionEffectPrefabs)
         {
-            var prefab = explosionEffectPrefabs[i];
             if (prefab != null)
             {
                 // 매번 같은 위치(transform.position)에 인스턴스화합니다.
