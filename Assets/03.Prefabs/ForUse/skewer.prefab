@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5967597781202171208}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ItemAttach3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 3650358391078684350}
   - component: {fileID: 4899385230683827578}
   - component: {fileID: -4938835738824198243}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: skewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7551809579180432526}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ItemAttach1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +401,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3285499496103214931}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ItemAttach2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2449549007474706916}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttachPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
