@@ -80,10 +80,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 3
 --- !u!114 &5725125627397686699
 MonoBehaviour:
@@ -100,7 +100,7 @@ MonoBehaviour:
   targetHealth: {fileID: 0}
   animator: {fileID: 1092741471497574698}
   moveSpeed: 2
-  attackRange: 1.5
+  attackRange: 3.5
   attackInterval: 2
   damageAmount: 1
 --- !u!1001 &1092741471585585904
