@@ -96,9 +96,6 @@ public class PlateController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.15f, 0.8f);
-
         if (attachPoint != null)
         {
             Gizmos.color = attachedSkewer != null ? Color.red : Color.green;

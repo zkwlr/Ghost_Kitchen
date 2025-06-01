@@ -10,7 +10,7 @@ public class Little_Ghost : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
     
 

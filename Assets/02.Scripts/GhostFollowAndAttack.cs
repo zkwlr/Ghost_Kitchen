@@ -45,6 +45,7 @@ public class GhostFollowAndAttack : MonoBehaviour
 
     void Update()
     {
+        
         if (targetHealth == null)
             return;
 
