@@ -1,0 +1,2 @@
+# TimelineSettings.asset 은 Git 체크아웃 시 LF로 맞춰주고 커밋 시에도 LF 유지
+ProjectSettings/TimelineSettings.asset text eol=lf
