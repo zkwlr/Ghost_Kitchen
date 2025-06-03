@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Well
+  - LG
+  - Skewer
   layers:
   - Default
   - TransparentFX

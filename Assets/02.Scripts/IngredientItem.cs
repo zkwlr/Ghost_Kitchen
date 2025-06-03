@@ -5,7 +5,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public enum IngredientType
 {
-    Sausage, Potato, Tteok, Meat
+    Sausage,
+    Potato,
+    Tteok,
+    Meat
 }
 
 public class IngredientItem : MonoBehaviour
