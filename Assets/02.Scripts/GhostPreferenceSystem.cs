@@ -101,6 +101,7 @@ public class GhostPreferenceSystem : MonoBehaviour
             // 싫어하는 재료가 있으면 화남
             BecomeAngry();
             CreateEffects(angryEffects);
+            Destroy(skewer);
 
             if (showDebugMessages)
                 Debug.Log("유령이 화났습니다!");
