@@ -58,9 +58,18 @@ public class ThrowCollisionDestroyer : MonoBehaviour
         if (collision.gameObject.CompareTag("LG"))
         {
             Destroy(collision.gameObject); // LG_01
-            ScoreManager.Instance.AddScore(gainedScore);
-            Debug.Log($"[Destroyer] 충돌 대상 {collision.gameObject.name} 파괴됨");
-            Debug.Log($"[ScoreManager] 점수 증가! 현재 점수: {ScoreManager.Instance.GetScore()}");
+            if (gfa != null)
+            {
+                // 유령이 파괴될 때 점수 추가
+                ScoreManager.Instance.AddScore(gainedScore);
+                Debug.Log($"[Destroyer] 충돌 대상 {collision.gameObject.name} 파괴됨");
+                Debug.Log($"[ScoreManager] 점수 증가! 현재 점수: {ScoreManager.Instance.GetScore()}");
+            }
+            else
+            {
+                Debug.Log("[Destroyer] 메인 메뉴 충돌");
+            }
+
         }
         Destroy(gameObject);           // skewer
     }
