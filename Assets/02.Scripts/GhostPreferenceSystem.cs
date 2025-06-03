@@ -11,8 +11,9 @@ public class GhostPreferenceSystem : MonoBehaviour
     [Header("행동 변화")]
     public GameObject[] satisfiedEffects;  // 만족했을 때 이펙트
     public GameObject[] angryEffects;      // 화났을 때 이펙트
+    public GameObject[] normalEffects;
 
-    [Header("상태 변수")]
+   [Header("상태 변수")]
     public bool isAngry = false;
 
     [Header("스탯 변화")]
@@ -55,8 +56,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         // 재료 분석 및 행동 결정
         AnalyzeIngredientsAndReact(ingredients, skewer);
     }
-
-    private List<string> GetIngredientsOnSkewer(GameObject skewer)
+    public List<string> GetIngredientsOnSkewer(GameObject skewer)
     {
         List<string> ingredients = new List<string>();
 
@@ -73,7 +73,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         return ingredients;
     }
 
-    private void AnalyzeIngredientsAndReact(List<string> ingredients, GameObject skewer)
+    public void AnalyzeIngredientsAndReact(List<string> ingredients, GameObject skewer)
     {
         int favoriteCount = 0;
         int hatedCount = 0;
@@ -117,12 +117,13 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else
         {
-            // 평범한 반응 - 꼬치만 파괴
+            // 평범한 반응 - 그냥 사라짐
             if (showDebugMessages)
                 Debug.Log("유령이 무관심합니다.");
 
             Destroy(gameObject);
             Destroy(skewer);
+            CreateEffects(normalEffects);
         }
     }
 

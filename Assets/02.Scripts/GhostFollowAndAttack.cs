@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostFollowAndAttack : MonoBehaviour
@@ -20,7 +21,15 @@ public class GhostFollowAndAttack : MonoBehaviour
     [Header("공격력")]
     public int damageAmount = 10;
 
+    [Header("접시 음식 감지")]
+    public float plateDetectionRange = 5f; // 접시 감지 범위
+    public string plateTag = "Plate"; // 접시 태그
+    public float plateCheckInterval = 1f; // 접시 확인 주기
+
     float attackTimer = 0f;
+    float plateCheckTimer = 0f;
+    private GhostPreferenceSystem preferenceSystem;
+
 
     void Awake()
     {
@@ -41,6 +50,13 @@ public class GhostFollowAndAttack : MonoBehaviour
             if (animator == null)
                 Debug.LogWarning("Animator 컴포넌트를 찾을 수 없습니다. 프리팹에 Animator 붙여주세요.");
         }
+
+        // GhostPreferenceSystem 참조 추가
+        preferenceSystem = GetComponent<GhostPreferenceSystem>();
+        if (preferenceSystem == null)
+        {
+            Debug.LogWarning("GhostPreferenceSystem 컴포넌트를 찾을 수 없습니다!");
+        }
     }
 
     void Update()
@@ -58,11 +74,18 @@ public class GhostFollowAndAttack : MonoBehaviour
             Vector3 dir = (targetT.position - transform.position).normalized;
             transform.position += dir * moveSpeed * Time.deltaTime;
             transform.LookAt(targetT);
-
             attackTimer = 0f;  // 재진입 시 즉시 공격하지 않으려면 초기화
         }
         else
         {
+            // 접시 음식 감지 타이머
+            plateCheckTimer += Time.deltaTime;
+            if (plateCheckTimer >= plateCheckInterval)
+            {
+                plateCheckTimer = 0f;
+                CheckForPlateFood();
+            }
+
             // 사정거리 내: 공격 카운트
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackInterval)
@@ -79,5 +102,54 @@ public class GhostFollowAndAttack : MonoBehaviour
 
             }
         }
+    }
+
+    private void CheckForPlateFood()
+    {
+        Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, plateDetectionRange);
+
+        foreach (Collider collider in nearbyColliders)
+        {
+            if (collider.CompareTag(plateTag))
+            {
+                PlateController plateController = collider.GetComponent<PlateController>();
+
+                if (plateController != null && plateController.hasSkewerNearby)
+                {
+                    GameObject skewer = plateController.GetClosestSkewer();
+
+                    if (skewer != null)
+                    {
+                        EatSkewerFromPlate(skewer, plateController);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void EatSkewerFromPlate(GameObject skewer, PlateController plateController)
+    {
+        Debug.Log($"{gameObject.name}이 접시에서 꼬치를 먹습니다!");
+
+        // 재료 분석
+        if (preferenceSystem != null)
+        {
+            List<string> ingredients = preferenceSystem.GetIngredientsOnSkewer(skewer);
+            preferenceSystem.AnalyzeIngredientsAndReact(ingredients,skewer);
+        }
+        else
+        {
+            Destroy(skewer);
+        }
+
+        // 접시에서 꼬치 제거
+        plateController.RemoveSkewer(skewer);
+    }
+    void OnDrawGizmosSelected()
+    {
+        // 접시 감지 범위
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, plateDetectionRange);
     }
 }

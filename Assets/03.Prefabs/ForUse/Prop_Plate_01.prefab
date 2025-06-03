@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2543333759238794580}
   m_Layer: 0
   m_Name: Prop_Plate_01
-  m_TagString: Untagged
+  m_TagString: Plate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,3 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attachPoint: {fileID: 4538734301789645295}
   snapDistance: 0.17
+  detectionRange: 0.08
+  checkInterval: 0.3
+  hasSkewerNearby: 0
+  showDebugMessages: 1
