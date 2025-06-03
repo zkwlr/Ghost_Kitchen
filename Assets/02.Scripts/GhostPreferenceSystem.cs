@@ -12,9 +12,13 @@ public class GhostPreferenceSystem : MonoBehaviour
     public GameObject[] satisfiedEffects;  // 만족했을 때 이펙트
     public GameObject[] angryEffects;      // 화났을 때 이펙트
 
+    [Header("상태 변수")]
+    public bool isAngry = false;
+
     [Header("스탯 변화")]
     public float angrySpeedMultiplier = 2f;    // 화났을 때 속도 배수
     public float angryDamageMultiplier = 1.5f; // 화났을 때 공격력 배수
+    public float angryAttackSpeedMultiplier = 2f; // 공격 속도 배수
 
     [Header("디버그")]
     public bool showDebugMessages = true;
@@ -22,6 +26,7 @@ public class GhostPreferenceSystem : MonoBehaviour
     private GhostFollowAndAttack ghostAI;
     private float originalSpeed;
     private int originalDamage;
+    private float originalAttackInterval;
 
     void Start()
     {
@@ -30,6 +35,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         {
             originalSpeed = ghostAI.moveSpeed;
             originalDamage = ghostAI.damageAmount;
+            originalAttackInterval = ghostAI.attackInterval;
         }
     }
 
@@ -59,17 +65,8 @@ public class GhostPreferenceSystem : MonoBehaviour
         {
             IngredientItem ingredientItem = child.GetComponent<IngredientItem>();
             if (ingredientItem != null)
-            {
-                ingredients.Add(ingredientItem.ingredientType.ToString());
-                if (showDebugMessages)
-                {
-                    Debug.LogWarning($"{child.name}의 IngredientType이 설정되지 않았습니다.");
-                }
-            }
-            else
-            {
-                // 컴포넌트가 없으면 태그나 이름으로 판단
-                ingredients.Add(child.name.Replace("(Clone)", "").Trim());
+            { 
+                ingredients.Add(ingredientItem.ingredientType.ToString()); 
             }
         }
 
@@ -124,6 +121,7 @@ public class GhostPreferenceSystem : MonoBehaviour
             if (showDebugMessages)
                 Debug.Log("유령이 무관심합니다.");
 
+            Destroy(gameObject);
             Destroy(skewer);
         }
     }
@@ -132,14 +130,19 @@ public class GhostPreferenceSystem : MonoBehaviour
     {
         if (ghostAI != null)
         {
+            isAngry = true;
             ghostAI.moveSpeed = originalSpeed * angrySpeedMultiplier;
             ghostAI.damageAmount = (int)(originalDamage * angryDamageMultiplier);
-
-            // 화난 상태 표시 (예: 색상 변경)
-            Renderer renderer = GetComponent<Renderer>();
-            if (renderer != null)
+            ghostAI.attackInterval = originalAttackInterval / angryAttackSpeedMultiplier;
+            Animator animator = GetComponent<Animator>();
+            if (animator != null)
             {
-                renderer.material.color = Color.red;
+                animator.speed = angryAttackSpeedMultiplier;
+            }
+
+            if (showDebugMessages)
+            {
+                Debug.Log($"유령 광폭화! 이동속도: {ghostAI.moveSpeed:F1}, 공격력: {ghostAI.damageAmount:F1}, 공격간격: {ghostAI.attackInterval:F2}초");
             }
         }
     }
