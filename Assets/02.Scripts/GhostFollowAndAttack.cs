@@ -50,6 +50,13 @@ public class GhostFollowAndAttack : MonoBehaviour
             if (animator == null)
                 Debug.LogWarning("Animator 컴포넌트를 찾을 수 없습니다. 프리팹에 Animator 붙여주세요.");
         }
+
+        // GhostPreferenceSystem 참조
+        preferenceSystem = GetComponent<GhostPreferenceSystem>();
+        if (preferenceSystem == null)
+        {
+            Debug.LogWarning("GhostPreferenceSystem 컴포넌트를 찾을 수 없습니다!");
+        }
     }
 
     void Update()
