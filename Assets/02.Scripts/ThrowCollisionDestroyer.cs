@@ -45,13 +45,16 @@ public class ThrowCollisionDestroyer : MonoBehaviour
             }
         }
 
-        // ─── 대상과 자신을 파괴 ───
+        // ─── 대상과 자신을 파괴, 점수 추가 ───
         if (collision.gameObject.CompareTag("LG"))
         {
             Destroy(collision.gameObject); // LG_01
+            ScoreManager.Instance.AddScore(1);
             Debug.Log($"[Destroyer] 충돌 대상 {collision.gameObject.name} 파괴됨");
+            Debug.Log($"[ScoreManager] 점수 증가! 현재 점수: {ScoreManager.Instance.GetScore()}");
         }
         Destroy(gameObject);           // skewer
     }
 }
+
 

@@ -21,7 +21,7 @@ public class HealthUI : MonoBehaviour
         // 초기 값 설정
         healthSlider.maxValue = target.maxHealth;
         healthSlider.value = target.CurrentHealth;
-        healthText.text = $"{target.CurrentHealth}/{target.maxHealth}";
+        // healthText.text = $"{target.CurrentHealth}/{target.maxHealth}";
 
         // 이벤트 등록
         target.OnHealthChanged += UpdateUI;
