@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1092741472892007372}
   - component: {fileID: 5725125627397686699}
   m_Layer: 0
-  m_Name: LG_01
+  m_Name: Ghost_Normal
   m_TagString: LG
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ CapsuleCollider:
   m_Radius: 1.2567501
   m_Height: 5.582264
   m_Direction: 1
-  m_Center: {x: -0.07067859, y: 2.9336634, z: 0.5447155}
+  m_Center: {x: -0.07067871, y: 2.4495535, z: 0.19918442}
 --- !u!54 &1092741472892007372
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ PrefabInstance:
     - target: {fileID: -3239181411909765690, guid: f8c8b82560e0b8c4b9f992ac7993ab8d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2595727826112536391, guid: f8c8b82560e0b8c4b9f992ac7993ab8d,
         type: 3}

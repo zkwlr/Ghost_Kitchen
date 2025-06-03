@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sizeSlots: 1
-  ingredientType: 0
+  ingredientType: 3
   originalScale: {x: 0.1, y: 0.5, z: 0.1}
   skewerScale: {x: 0.1, y: 0.5, z: 0.1}
   isOnSkewer: 0

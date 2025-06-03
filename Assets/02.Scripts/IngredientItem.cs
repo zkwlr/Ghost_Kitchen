@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public enum IngredientType
 {
-    Meat, Vegetable, Seafood, Sauce, Spice
+    Sausage, Potato, Tteok, Meat
 }
 
 public class IngredientItem : MonoBehaviour
