@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 3650358391078684350}
   - component: {fileID: 4899385230683827578}
   - component: {fileID: -4938835738824198243}
+  - component: {fileID: 2037189341844611323}
   m_Layer: 0
   m_Name: skewer
   m_TagString: Skewer
@@ -361,6 +362,22 @@ MonoBehaviour:
   - {fileID: 19814690, guid: cd4d7020429cde74db076ffa72495419, type: 3}
   - {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
   requiredItemCount: 4
+--- !u!114 &2037189341844611323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915292811150426728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc45b39ac08a27e43a152f86151a3cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTag: floor
+  explosionEffectPrefabs:
+  - {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  requiredItemCount: 1
 --- !u!1 &3420216713429492747
 GameObject:
   m_ObjectHideFlags: 0

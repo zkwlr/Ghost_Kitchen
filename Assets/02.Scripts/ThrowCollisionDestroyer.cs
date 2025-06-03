@@ -46,7 +46,12 @@ public class ThrowCollisionDestroyer : MonoBehaviour
         }
 
         // ─── 대상과 자신을 파괴 ───
-        Destroy(collision.gameObject); // LG_01
+        if (collision.gameObject.CompareTag("LG"))
+        {
+            Destroy(collision.gameObject); // LG_01
+            Debug.Log($"[Destroyer] 충돌 대상 {collision.gameObject.name} 파괴됨");
+        }
         Destroy(gameObject);           // skewer
     }
 }
+
