@@ -1245,6 +1245,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartGhost
       objectReference: {fileID: 0}
+    - target: {fileID: 1092741472892007369, guid: 3dbd35bd620d65a438d542093c4f36fc,
+        type: 3}
+      propertyPath: m_TagString
+      value: LG
+      objectReference: {fileID: 0}
     - target: {fileID: 1092741472892007372, guid: 3dbd35bd620d65a438d542093c4f36fc,
         type: 3}
       propertyPath: m_UseGravity
@@ -1345,6 +1350,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 820543609}
+    - targetCorrespondingSourceObject: {fileID: 1092741472892007369, guid: 3dbd35bd620d65a438d542093c4f36fc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 820543612}
   m_SourcePrefab: {fileID: 100100000, guid: 3dbd35bd620d65a438d542093c4f36fc, type: 3}
 --- !u!4 &71452563 stripped
 Transform:
@@ -2530,6 +2539,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RecordGhost
+      objectReference: {fileID: 0}
+    - target: {fileID: 1013883470282288633, guid: ad9176902822db44db922082f7482e8c,
+        type: 3}
+      propertyPath: m_TagString
+      value: LG
       objectReference: {fileID: 0}
     - target: {fileID: 1013883470282288638, guid: ad9176902822db44db922082f7482e8c,
         type: 3}
@@ -8271,6 +8285,19 @@ MonoBehaviour:
   amplitude: 9
   frequency: 1
   phaseOffset: 4.5
+--- !u!114 &820543612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820543604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 723d640730e508d4a91b859c6d15ca1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuType: 0
 --- !u!1 &823507065
 GameObject:
   m_ObjectHideFlags: 0
@@ -11435,6 +11462,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: QuitGhost
+      objectReference: {fileID: 0}
+    - target: {fileID: 6573882158656662796, guid: 2ac0d1b3d910b75478be2fe7426ef8b5,
+        type: 3}
+      propertyPath: m_TagString
+      value: LG
       objectReference: {fileID: 0}
     - target: {fileID: 6573882158656662797, guid: 2ac0d1b3d910b75478be2fe7426ef8b5,
         type: 3}
@@ -20453,7 +20485,7 @@ GameObject:
   - component: {fileID: 2072275186}
   m_Layer: 0
   m_Name: floor
-  m_TagString: Untagged
+  m_TagString: floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
