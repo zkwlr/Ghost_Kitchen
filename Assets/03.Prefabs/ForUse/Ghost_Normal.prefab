@@ -103,6 +103,7 @@ MonoBehaviour:
   attackRange: 3
   attackInterval: 2
   damageAmount: 1
+  scoreValue: 1
 --- !u!1001 &1092741471585585904
 PrefabInstance:
   m_ObjectHideFlags: 0

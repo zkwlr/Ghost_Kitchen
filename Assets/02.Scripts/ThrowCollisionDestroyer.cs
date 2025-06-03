@@ -45,11 +45,20 @@ public class ThrowCollisionDestroyer : MonoBehaviour
             }
         }
 
+        // 4) 충돌 대상(유령) 파괴 및 점수 획득
+        // 유령의 GhostFollowAndAttack 스크립트에서 scoreValue 읽어오기
+        var gfa = collision.gameObject.GetComponent<GhostFollowAndAttack>();
+        int gainedScore = 1;
+        if (gfa != null)
+        {
+            gainedScore = gfa.GetScoreValue();
+        }
+
         // ─── 대상과 자신을 파괴, 점수 추가 ───
         if (collision.gameObject.CompareTag("LG"))
         {
             Destroy(collision.gameObject); // LG_01
-            ScoreManager.Instance.AddScore(1);
+            ScoreManager.Instance.AddScore(gainedScore);
             Debug.Log($"[Destroyer] 충돌 대상 {collision.gameObject.name} 파괴됨");
             Debug.Log($"[ScoreManager] 점수 증가! 현재 점수: {ScoreManager.Instance.GetScore()}");
         }
