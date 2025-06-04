@@ -8,6 +8,7 @@ TagManager:
   - LG
   - Skewer
   - floor
+  - Plate
   layers:
   - Default
   - TransparentFX
