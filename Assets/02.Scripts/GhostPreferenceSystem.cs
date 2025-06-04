@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class GhostPreferenceSystem : MonoBehaviour
 {
-    [Header("À¯·É ¼±È£µµ ¼³Á¤")]
-    public List<string> favoriteIngredients = new List<string>(); // ÁÁ¾ÆÇÏ´Â Àç·á
-    public List<string> hatedIngredients = new List<string>();    // ½È¾îÇÏ´Â Àç·á
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    public List<string> favoriteIngredients = new List<string>(); // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+    public List<string> hatedIngredients = new List<string>();    // ï¿½È¾ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 
-    [Header("Çàµ¿ º¯È­")]
-    public GameObject[] satisfiedEffects;  // ¸¸Á·ÇßÀ» ¶§ ÀÌÆåÆ®
-    public GameObject[] angryEffects;      // È­³µÀ» ¶§ ÀÌÆåÆ®
+    [Header("ï¿½àµ¿ ï¿½ï¿½È­")]
+    public GameObject[] satisfiedEffects;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    public GameObject[] angryEffects;      // È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     public GameObject[] normalEffects;
 
-   [Header("»óÅÂ º¯¼ö")]
+   [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public bool isAngry = false;
 
-    [Header("½ºÅÈ º¯È­")]
-    public float angrySpeedMultiplier = 2f;    // È­³µÀ» ¶§ ¼Óµµ ¹è¼ö
-    public float angryDamageMultiplier = 1.5f; // È­³µÀ» ¶§ °ø°İ·Â ¹è¼ö
-    public float angryAttackSpeedMultiplier = 2f; // °ø°İ ¼Óµµ ¹è¼ö
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­")]
+    public float angrySpeedMultiplier = 2f;    // È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½
+    public float angryDamageMultiplier = 1.5f; // È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½İ·ï¿½ ï¿½ï¿½ï¿½
+    public float angryAttackSpeedMultiplier = 2f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½
 
-    [Header("µğ¹ö±×")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public bool showDebugMessages = true;
 
     private GhostFollowAndAttack ghostAI;
@@ -50,17 +50,17 @@ public class GhostPreferenceSystem : MonoBehaviour
 
         if (showDebugMessages)
         {
-            Debug.Log($"²¿Ä¡ Àç·á: {string.Join(", ", ingredients)}");
+            Debug.Log($"ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½: {string.Join(", ", ingredients)}");
         }
 
-        // Àç·á ºĞ¼® ¹× Çàµ¿ °áÁ¤
+        // ï¿½ï¿½ï¿½ ï¿½Ğ¼ï¿½ ï¿½ï¿½ ï¿½àµ¿ ï¿½ï¿½ï¿½ï¿½
         AnalyzeIngredientsAndReact(ingredients, skewer);
     }
     public List<string> GetIngredientsOnSkewer(GameObject skewer)
     {
         List<string> ingredients = new List<string>();
 
-        // ²¿Ä¡ÀÇ ¸ğµç ÀÚ½Ä ¿ÀºêÁ§Æ®¸¦ È®ÀÎ
+        // ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È®ï¿½ï¿½
         foreach (Transform child in skewer.transform)
         {
             IngredientItem ingredientItem = child.GetComponent<IngredientItem>();
@@ -79,7 +79,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         int hatedCount = 0;
         int totalIngredients = ingredients.Count;
 
-        // Àç·á ºĞ¼®
+        // ï¿½ï¿½ï¿½ ï¿½Ğ¼ï¿½
         foreach (string ingredient in ingredients)
         {
             if (favoriteIngredients.Contains(ingredient))
@@ -90,47 +90,63 @@ public class GhostPreferenceSystem : MonoBehaviour
 
         if (showDebugMessages)
         {
-            Debug.Log($"ÁÁ¾ÆÇÏ´Â Àç·á: {favoriteCount}°³, ½È¾îÇÏ´Â Àç·á: {hatedCount}°³");
+            Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½: {favoriteCount}ï¿½ï¿½, ï¿½È¾ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½: {hatedCount}ï¿½ï¿½");
         }
 
-        // Çàµ¿ °áÁ¤
+        // ï¿½àµ¿ ï¿½ï¿½ï¿½ï¿½
         if (hatedCount > 0)
         {
-            // ½È¾îÇÏ´Â Àç·á°¡ ÀÖÀ¸¸é È­³²
+            // ï¿½È¾ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½á°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½
             BecomeAngry();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
             if (showDebugMessages)
-                Debug.Log("À¯·ÉÀÌ È­³µ½À´Ï´Ù!");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
         }
         else if (totalIngredients < 3)
         {
-            // 2¼øÀ§: Àç·á°¡ 3°³ ¹Ì¸¸ÀÌ¸é È­³²
+            // 2ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½á°¡ 3ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½Ì¸ï¿½ È­ï¿½ï¿½
             BecomeAngry();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
             if (showDebugMessages)
-                Debug.Log($"À¯·ÉÀÌ È­³µ½À´Ï´Ù! (Àç·á°¡ {totalIngredients}°³·Î ºÎÁ·ÇÔ)");
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½! (ï¿½ï¿½á°¡ {totalIngredients}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)");
         }
-        else if (favoriteCount >= 1) // ÁÁ¾ÆÇÏ´Â Àç·á°¡ 1°³ ÀÌ»óÀÌ¸é ¸¸Á·
+        else if (favoriteCount >= 1) // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½á°¡ 1ï¿½ï¿½ ï¿½Ì»ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
-            // ¸¸Á·ÇÏ¸é »ç¶óÁü
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
             BecomeSatisfied();
             CreateEffects(satisfiedEffects);
 
             if (showDebugMessages)
-                Debug.Log("À¯·ÉÀÌ ¸¸Á·ÇÏ¿© »ç¶óÁı´Ï´Ù!");
-
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
+            var gfa = gameObject.GetComponent<GhostFollowAndAttack>();
+            int gainedScore = 1;
             Destroy(skewer);
-            Destroy(gameObject);
+            if (gameObject.CompareTag("LG"))
+            {
+                Destroy(gameObject); // LG_01
+                if (gfa != null)
+                {
+                    // ìœ ë ¹ì´ íŒŒê´´ë  ë•Œ ì ìˆ˜ ì¶”ê°€
+                    ScoreManager.Instance.AddScore(gainedScore);
+                    Debug.Log($"[Destroyer] ì¶©ëŒ ëŒ€ìƒ {gameObject.name} íŒŒê´´ë¨");
+                    Debug.Log($"[ScoreManager] ì ìˆ˜ ì¦ê°€! í˜„ì¬ ì ìˆ˜: {ScoreManager.Instance.GetScore()}");
+                }
+                else
+                {
+                    Debug.Log("[Destroyer] ë©”ì¸ ë©”ë‰´ ì¶©ëŒ");
+                }
+
+            }
         }
         else
         {
-            // Æò¹üÇÑ ¹İÀÀ - ±×³É »ç¶óÁü
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
             if (showDebugMessages)
-                Debug.Log("À¯·ÉÀÌ ¹«°ü½ÉÇÕ´Ï´Ù.");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
 
             Destroy(skewer);
             CreateEffects(normalEffects);
@@ -153,14 +169,14 @@ public class GhostPreferenceSystem : MonoBehaviour
 
             if (showDebugMessages)
             {
-                Debug.Log($"À¯·É ±¤ÆøÈ­! ÀÌµ¿¼Óµµ: {ghostAI.moveSpeed:F1}, °ø°İ·Â: {ghostAI.damageAmount:F1}, °ø°İ°£°İ: {ghostAI.attackInterval:F2}ÃÊ");
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­! ï¿½Ìµï¿½ï¿½Óµï¿½: {ghostAI.moveSpeed:F1}, ï¿½ï¿½ï¿½İ·ï¿½: {ghostAI.damageAmount:F1}, ï¿½ï¿½ï¿½İ°ï¿½ï¿½ï¿½: {ghostAI.attackInterval:F2}ï¿½ï¿½");
             }
         }
     }
 
     private void BecomeSatisfied()
     {
-        // ¸¸Á·ÇÑ »óÅÂÀÇ ½Ã°¢Àû È¿°ú
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
