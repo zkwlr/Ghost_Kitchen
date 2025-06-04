@@ -9,7 +9,7 @@ public class SkewerController : MonoBehaviour
     public Transform[] slotPositions = new Transform[3];
 
     [Header("Detection Settings")]
-    public Vector3 detectionBoxSize = new Vector3(0.3f, 0.3f, 2.0f); // ²¿Ä¡º¸´Ù Á¶±İ Å©°Ô
+    public Vector3 detectionBoxSize = new Vector3(0.3f, 0.3f, 2.0f); // ê¼¬ì¹˜ë³´ë‹¤ ì¡°ê¸ˆ í¬ê²Œ
 
     [Header("Visual Feedback")]
     public GameObject[] slotIndicators = new GameObject[3];
@@ -37,15 +37,15 @@ public class SkewerController : MonoBehaviour
 
     private void SetupColliders()
     {
-        // ±âÁ¸ Box Collider´Â ¹°¸®¿ëÀ¸·Î À¯Áö
+        // ê¸°ì¡´ Box ColliderëŠ” ë¬¼ë¦¬ìš©ìœ¼ë¡œ ìœ ì§€
         physicsCollider = GetComponent<BoxCollider>();
         if (physicsCollider != null)
         {
             physicsCollider.isTrigger = false;
-            // ²¿Ä¡ ½ÇÁ¦ Å©±â À¯Áö (¿¹: 0.1, 0.1, 1.5)
+            // ê¼¬ì¹˜ ì‹¤ì œ í¬ê¸° ìœ ì§€ (ì˜ˆ: 0.1, 0.1, 1.5)
         }
 
-        // ¹°¸® Äİ¶óÀÌ´õ°¡ ¾øÀ¸¸é »ı¼º
+        // ë¬¼ë¦¬ ì½œë¼ì´ë”ê°€ ì—†ìœ¼ë©´ ìƒì„±
         if (physicsCollider == null)
         {
             physicsCollider = gameObject.AddComponent<BoxCollider>();
@@ -75,7 +75,7 @@ public class SkewerController : MonoBehaviour
 
     void Update()
     {
-        // ²¿Ä¡°¡ ÀâÇôÀÖÀ» ¶§¸¸ Àç·á °¨Áö
+        // ê¼¬ì¹˜ê°€ ì¡í˜€ìˆì„ ë•Œë§Œ ì¬ë£Œ ê°ì§€
         if (skewerGrab != null && skewerGrab.isSelected)
         {
             CheckForIngredientsInRange();
@@ -84,11 +84,11 @@ public class SkewerController : MonoBehaviour
 
     private void CheckForIngredientsInRange()
     {
-        // Physics.OverlapBox·Î Detection Range ³» Àç·á Ã£±â
+        // Physics.OverlapBoxë¡œ Detection Range ë‚´ ì¬ë£Œ ì°¾ê¸°
         Collider[] nearbyColliders = Physics.OverlapBox(
-            transform.position,                    // Áß½ÉÁ¡
-            detectionBoxSize * 0.5f,              // ¹İ Å©±â
-            transform.rotation                     // È¸Àü
+            transform.position,                    // ì¤‘ì‹¬ì 
+            detectionBoxSize * 0.5f,              // ë°˜ í¬ê¸°
+            transform.rotation                     // íšŒì „
         );
 
         foreach (Collider col in nearbyColliders)
@@ -157,27 +157,27 @@ public class SkewerController : MonoBehaviour
     {
         GameObject newIngredient = Instantiate(originalIngredient.gameObject);
 
-        // °Ë»ö °á°ú [1]ÀÇ ¹æ¹ı: ºÎ¸ğ¸¦ null·Î ¼³Á¤ÇÏ°í ½ºÄÉÀÏ ¼³Á¤ ÈÄ ´Ù½Ã ºÎ¸ğ ¼³Á¤
+        // ê²€ìƒ‰ ê²°ê³¼ [1]ì˜ ë°©ë²•: ë¶€ëª¨ë¥¼ nullë¡œ ì„¤ì •í•˜ê³  ìŠ¤ì¼€ì¼ ì„¤ì • í›„ ë‹¤ì‹œ ë¶€ëª¨ ì„¤ì •
         Transform originalParent = transform;
 
-        // 1. ºÎ¸ğ¸¦ null·Î ¼³Á¤
+        // 1. ë¶€ëª¨ë¥¼ nullë¡œ ì„¤ì •
         newIngredient.transform.SetParent(null);
 
-        // 2. ¿øÇÏ´Â Å©±â·Î ¼³Á¤ (Àı´ë Å©±â)
+        // 2. ì›í•˜ëŠ” í¬ê¸°ë¡œ ì„¤ì • (ì ˆëŒ€ í¬ê¸°)
         IngredientItem ingredientScript = newIngredient.GetComponent<IngredientItem>();
         if (ingredientScript != null)
         {
             newIngredient.transform.localScale = ingredientScript.skewerScale;
         }
 
-        // 3. À§Ä¡ ¼³Á¤
+        // 3. ìœ„ì¹˜ ì„¤ì •
         newIngredient.transform.position = GetSlotPosition(slotIndex);
         newIngredient.transform.rotation = GetSlotRotation();
 
-        // 4. ´Ù½Ã ºÎ¸ğ ¼³Á¤
+        // 4. ë‹¤ì‹œ ë¶€ëª¨ ì„¤ì •
         newIngredient.transform.SetParent(originalParent);
 
-        // ³ª¸ÓÁö ÄÄÆ÷³ÍÆ® Á¦°Å...
+        // ë‚˜ë¨¸ì§€ ì»´í¬ë„ŒíŠ¸ ì œê±°...
         XRGrabInteractable grabComponent = newIngredient.GetComponent<XRGrabInteractable>();
         if (grabComponent != null) Destroy(grabComponent);
 
@@ -196,7 +196,7 @@ public class SkewerController : MonoBehaviour
     {
         if (attachedIngredients.Contains(ingredient))
         {
-            // Àç·á ½ºÅ©¸³Æ®¿¡ ºĞ¸® ¾Ë¸²
+            // ì¬ë£Œ ìŠ¤í¬ë¦½íŠ¸ì— ë¶„ë¦¬ ì•Œë¦¼
             IngredientItem ingredientScript = ingredient.GetComponent<IngredientItem>();
             if (ingredientScript != null)
             {
@@ -236,13 +236,13 @@ public class SkewerController : MonoBehaviour
         }
     }
 
-    // ²¿Ä¡¿Í ¸ğµç Àç·áµéÀÇ ÅëÇÕ °æ°è °è»ê
+    // ê¼¬ì¹˜ì™€ ëª¨ë“  ì¬ë£Œë“¤ì˜ í†µí•© ê²½ê³„ ê³„ì‚°
     public Bounds GetCombinedBounds()
     {
         Bounds combinedBounds = new Bounds();
         bool hasBounds = false;
 
-        // ²¿Ä¡ ÀÚÃ¼ÀÇ Renderer Æ÷ÇÔ
+        // ê¼¬ì¹˜ ìì²´ì˜ Renderer í¬í•¨
         Renderer skewerRenderer = GetComponent<Renderer>();
         if (skewerRenderer != null)
         {
@@ -250,7 +250,7 @@ public class SkewerController : MonoBehaviour
             hasBounds = true;
         }
 
-        // ¸ğµç Àç·áµéÀÇ Renderer Æ÷ÇÔ
+        // ëª¨ë“  ì¬ë£Œë“¤ì˜ Renderer í¬í•¨
         foreach (GameObject ingredient in attachedIngredients)
         {
             if (ingredient != null)
@@ -271,7 +271,7 @@ public class SkewerController : MonoBehaviour
             }
         }
 
-        // °æ°è°¡ ¾øÀ¸¸é ±âº» °æ°è ¼³Á¤
+        // ê²½ê³„ê°€ ì—†ìœ¼ë©´ ê¸°ë³¸ ê²½ê³„ ì„¤ì •
         if (!hasBounds)
         {
             combinedBounds = new Bounds(transform.position, Vector3.one);
@@ -280,18 +280,18 @@ public class SkewerController : MonoBehaviour
         return combinedBounds;
     }
 
-    // ¹°¸® Äİ¶óÀÌ´õ¸¦ ÅëÇÕ °æ°è¿¡ ¸Â°Ô ¾÷µ¥ÀÌÆ®
+    // ë¬¼ë¦¬ ì½œë¼ì´ë”ë¥¼ í†µí•© ê²½ê³„ì— ë§ê²Œ ì—…ë°ì´íŠ¸
     public void UpdatePhysicsColliderToBounds()
     {
         if (physicsCollider == null) return;
 
         Bounds combinedBounds = GetCombinedBounds();
 
-        // ¿ùµå ÁÂÇ¥¸¦ ·ÎÄÃ ÁÂÇ¥·Î º¯È¯
+        // ì›”ë“œ ì¢Œí‘œë¥¼ ë¡œì»¬ ì¢Œí‘œë¡œ ë³€í™˜
         Vector3 localCenter = transform.InverseTransformPoint(combinedBounds.center);
         Vector3 localSize = transform.InverseTransformVector(combinedBounds.size);
 
-        // Àı´ñ°ª »ç¿ë (½ºÄÉÀÏÀÌ À½¼öÀÏ ¼ö ÀÖÀ½)
+        // ì ˆëŒ“ê°’ ì‚¬ìš© (ìŠ¤ì¼€ì¼ì´ ìŒìˆ˜ì¼ ìˆ˜ ìˆìŒ)
         localSize = new Vector3(
             Mathf.Abs(localSize.x),
             Mathf.Abs(localSize.y),
@@ -304,7 +304,7 @@ public class SkewerController : MonoBehaviour
         Debug.Log($"Physics collider updated - Center: {localCenter}, Size: {localSize}");
     }
 
-    // ¼öµ¿À¸·Î °æ°è ¾÷µ¥ÀÌÆ®
+    // ìˆ˜ë™ìœ¼ë¡œ ê²½ê³„ ì—…ë°ì´íŠ¸
     [ContextMenu("Update Bounds")]
     public void ManualUpdateBounds()
     {
@@ -377,19 +377,19 @@ public class SkewerController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Detection Range ½Ã°¢È­ (³ë¶õ»ö)
+        // Detection Range ì‹œê°í™” (ë…¸ë€ìƒ‰)
         Gizmos.color = Color.yellow;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, detectionBoxSize);
 
-        // ¹°¸® Äİ¶óÀÌ´õ ½Ã°¢È­ (»¡°£»ö)
+        // ë¬¼ë¦¬ ì½œë¼ì´ë” ì‹œê°í™” (ë¹¨ê°„ìƒ‰)
         if (physicsCollider != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(physicsCollider.center, physicsCollider.size);
         }
 
-        // ÅëÇÕ °æ°è Ç¥½Ã (³ì»ö)
+        // í†µí•© ê²½ê³„ í‘œì‹œ (ë…¹ìƒ‰)
         if (Application.isPlaying)
         {
             Bounds combinedBounds = GetCombinedBounds();

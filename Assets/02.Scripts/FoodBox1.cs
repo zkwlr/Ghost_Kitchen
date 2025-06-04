@@ -5,12 +5,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class IngredientBox : MonoBehaviour
 {
-    [Header("Àç·á ¼³Á¤")]
+    [Header("ì¬ë£Œ ì„¤ì •")]
     public GameObject[] ingredientPrefabs;
 
-    [Header("¼Õ ¼³Á¤")]
-    public XRBaseInteractor leftHand;  // Inspector¿¡¼­ Left Direct Interactor ¿¬°á
-    public XRBaseInteractor rightHand; // Inspector¿¡¼­ Right Direct Interactor ¿¬°á
+    [Header("ì† ì„¤ì •")]
+    public XRBaseInteractor leftHand;  // Inspectorì—ì„œ Left Direct Interactor ì—°ê²°
+    public XRBaseInteractor rightHand; // Inspectorì—ì„œ Right Direct Interactor ì—°ê²°
 
     private BoxCollider boxCollider;
     private bool canSpawn = true;
@@ -22,7 +22,7 @@ public class IngredientBox : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
         if (boxCollider == null)
         {
-            Debug.LogError("BoxCollider°¡ ÇÊ¿äÇÕ´Ï´Ù!");
+            Debug.LogError("BoxColliderê°€ í•„ìš”í•©ë‹ˆë‹¤!");
         }
     }
 
@@ -39,7 +39,7 @@ public class IngredientBox : MonoBehaviour
         Vector3 worldCenter = transform.TransformPoint(boxCollider.center);
         Vector3 worldHalfExtents = Vector3.Scale(boxCollider.size, transform.lossyScale) * 0.5f;
 
-        // ¿Ş¼Õ Ã¼Å©
+        // ì™¼ì† ì²´í¬
         if (leftHand != null && IsHandInBox(leftHand.transform.position, worldCenter, worldHalfExtents))
         {
             if (!leftHand.hasSelection && CheckXRInput(leftHand))
@@ -49,7 +49,7 @@ public class IngredientBox : MonoBehaviour
             }
         }
 
-        // ¿À¸¥¼Õ Ã¼Å©
+        // ì˜¤ë¥¸ì† ì²´í¬
         if (rightHand != null && IsHandInBox(rightHand.transform.position, worldCenter, worldHalfExtents))
         {
             if (!rightHand.hasSelection && CheckXRInput(rightHand))
@@ -62,7 +62,7 @@ public class IngredientBox : MonoBehaviour
 
     bool IsHandInBox(Vector3 handPosition, Vector3 boxCenter, Vector3 boxHalfExtents)
     {
-        // ¼Õ À§Ä¡°¡ ¹Ú½º ¿µ¿ª ³»¿¡ ÀÖ´ÂÁö Ã¼Å©
+        // ì† ìœ„ì¹˜ê°€ ë°•ìŠ¤ ì˜ì—­ ë‚´ì— ìˆëŠ”ì§€ ì²´í¬
         Vector3 localPoint = transform.InverseTransformPoint(handPosition);
         Vector3 localCenter = boxCollider.center;
         Vector3 localHalfExtents = boxCollider.size * 0.5f;
@@ -73,10 +73,10 @@ public class IngredientBox : MonoBehaviour
     }
     bool CheckXRInput(XRBaseInteractor hand)
     {
-        // XR Direct InteractorÀÇ select »óÅÂ Ã¼Å©
+        // XR Direct Interactorì˜ select ìƒíƒœ ì²´í¬
         if (hand is XRDirectInteractor directInteractor)
         {
-            // ÇöÀç ÇÁ·¹ÀÓ¿¡¼­ select°¡ È°¼ºÈ­µÇ¾ú´ÂÁö Ã¼Å©
+            // í˜„ì¬ í”„ë ˆì„ì—ì„œ selectê°€ í™œì„±í™”ë˜ì—ˆëŠ”ì§€ ì²´í¬
             return directInteractor.isSelectActive;
         }
 
@@ -96,7 +96,7 @@ public class IngredientBox : MonoBehaviour
         {
             if (hand.interactionManager != null)
             {
-                // »õ·Î¿î ÀÎÅÍÆäÀÌ½º ¹æ½ÄÀ¸·Î Ä³½ºÆÃ
+                // ìƒˆë¡œìš´ ì¸í„°í˜ì´ìŠ¤ ë°©ì‹ìœ¼ë¡œ ìºìŠ¤íŒ…
                 hand.interactionManager.SelectEnter((IXRSelectInteractor)hand, (IXRSelectInteractable)grabInteractable);
             }
         }
@@ -105,7 +105,7 @@ public class IngredientBox : MonoBehaviour
         canSpawn = false;
         Invoke(nameof(ResetSpawnCooldown), spawnCooldown);
 
-        Debug.Log($"{name}¿¡¼­ {newIngredient.name} »ı¼ºµÊ!");
+        Debug.Log($"{name}ì—ì„œ {newIngredient.name} ìƒì„±ë¨!");
     }
 
     void ResetSpawnCooldown()

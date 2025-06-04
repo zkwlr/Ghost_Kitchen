@@ -6,13 +6,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class PlateController : MonoBehaviour
 {
     [Header("Settings")]
-    public Transform attachPoint; // ²¿Ä¡°¡ ºÙÀ» À§Ä¡
-    public float snapDistance = 0.3f; // ½º³À °Å¸®
+    public Transform attachPoint; // ê¼¬ì¹˜ê°€ ë¶™ì„ ìœ„ì¹˜
+    public float snapDistance = 0.3f; // ìŠ¤ëƒ… ê±°ë¦¬
 
     [Header("Skewer Detection")]
-    public float detectionRange = 1.5f; // ²¿Ä¡ °¨Áö ¹üÀ§ (½º³Àº¸´Ù ³Ğ°Ô)
-    public float checkInterval = 0.3f; // °¨Áö ÁÖ±â
-    public bool hasSkewerNearby = false; // ±ÙÃ³¿¡ ²¿Ä¡°¡ ÀÖ´ÂÁö
+    public float detectionRange = 1.5f; // ê¼¬ì¹˜ ê°ì§€ ë²”ìœ„ (ìŠ¤ëƒ…ë³´ë‹¤ ë„“ê²Œ)
+    public float checkInterval = 0.3f; // ê°ì§€ ì£¼ê¸°
+    public bool hasSkewerNearby = false; // ê·¼ì²˜ì— ê¼¬ì¹˜ê°€ ìˆëŠ”ì§€
 
     [Header("Debug")]
     public bool showDebugMessages = true;
@@ -55,7 +55,7 @@ public class PlateController : MonoBehaviour
         if (skewer == null) return;
 
         XRGrabInteractable grab = skewer.GetComponent<XRGrabInteractable>();
-        if (grab == null || grab.isSelected) return; // Àâ°í ÀÖÀ¸¸é ¹«½Ã
+        if (grab == null || grab.isSelected) return; // ì¡ê³  ìˆìœ¼ë©´ ë¬´ì‹œ
 
         if (Vector3.Distance(skewer.transform.position, attachPoint.position) <= snapDistance)
         {
@@ -67,17 +67,17 @@ public class PlateController : MonoBehaviour
     {
         attachedSkewer = skewer;
 
-        // À§Ä¡¸¸ °íÁ¤ (¹°¸®´Â ±×´ë·Î)
+        // ìœ„ì¹˜ë§Œ ê³ ì • (ë¬¼ë¦¬ëŠ” ê·¸ëŒ€ë¡œ)
         skewer.transform.position = attachPoint.position;
         skewer.transform.rotation = attachPoint.rotation;
 
         Debug.Log("Skewer snapped to plate");
     }
 
-    // Update¿¡¼­ À§Ä¡ °íÁ¤ + ÀâÀ¸¸é ÇØÁ¦ Ã¼Å©
+    // Updateì—ì„œ ìœ„ì¹˜ ê³ ì • + ì¡ìœ¼ë©´ í•´ì œ ì²´í¬
     void Update()
     {
-        // ±ÙÃ³ ²¿Ä¡ °¨Áö (ÁÖ±âÀûÀ¸·Î)
+        // ê·¼ì²˜ ê¼¬ì¹˜ ê°ì§€ (ì£¼ê¸°ì ìœ¼ë¡œ)
         checkTimer += Time.deltaTime;
         if (checkTimer >= checkInterval)
         {
@@ -85,29 +85,29 @@ public class PlateController : MonoBehaviour
             DetectNearbySkewers();
         }
 
-        // ±âÁ¸ ºÙÀÎ ²¿Ä¡ °ü¸®
+        // ê¸°ì¡´ ë¶™ì¸ ê¼¬ì¹˜ ê´€ë¦¬
         if (attachedSkewer != null)
         {
             XRGrabInteractable grab = attachedSkewer.GetComponent<XRGrabInteractable>();
 
-            // ²¿Ä¡¸¦ ÀâÀ¸¸é Áï½Ã ÇØÁ¦
+            // ê¼¬ì¹˜ë¥¼ ì¡ìœ¼ë©´ ì¦‰ì‹œ í•´ì œ
             if (grab != null && grab.isSelected)
             {
                 DetachSkewer();
                 return;
             }
 
-            // ÀâÁö ¾ÊÀº »óÅÂ¿¡¼­´Â À§Ä¡ °­Á¦ °íÁ¤
+            // ì¡ì§€ ì•Šì€ ìƒíƒœì—ì„œëŠ” ìœ„ì¹˜ ê°•ì œ ê³ ì •
             attachedSkewer.transform.position = attachPoint.position;
             attachedSkewer.transform.rotation = attachPoint.rotation;
         }
     }
     private void DetectNearbySkewers()
     {
-        // ÀÌÀü ¸®½ºÆ® Å¬¸®¾î
+        // ì´ì „ ë¦¬ìŠ¤íŠ¸ í´ë¦¬ì–´
         nearbySkewers.Clear();
 
-        // Physics.OverlapSphere·Î ±ÙÃ³ ²¿Ä¡ Ã£±â
+        // Physics.OverlapSphereë¡œ ê·¼ì²˜ ê¼¬ì¹˜ ì°¾ê¸°
         Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, detectionRange);
 
         foreach (Collider collider in nearbyColliders)
@@ -119,20 +119,20 @@ public class PlateController : MonoBehaviour
             }
         }
 
-        // »óÅÂ ¾÷µ¥ÀÌÆ®
+        // ìƒíƒœ ì—…ë°ì´íŠ¸
         bool previousState = hasSkewerNearby;
-        hasSkewerNearby = nearbySkewers.Count > 0 || attachedSkewer != null; // ºÙÀº ²¿Ä¡µµ Æ÷ÇÔ
+        hasSkewerNearby = nearbySkewers.Count > 0 || attachedSkewer != null; // ë¶™ì€ ê¼¬ì¹˜ë„ í¬í•¨
 
-        // »óÅÂ º¯È­ µğ¹ö±×
+        // ìƒíƒœ ë³€í™” ë””ë²„ê·¸
         if (showDebugMessages && previousState != hasSkewerNearby)
         {
             if (hasSkewerNearby)
             {
-                Debug.Log($"Á¢½Ã {gameObject.name}¿¡ ²¿Ä¡ °¨ÁöµÊ (±ÙÃ³: {nearbySkewers.Count}°³, ºÙÀ½: {(attachedSkewer != null ? 1 : 0)}°³)");
+                Debug.Log($"ì ‘ì‹œ {gameObject.name}ì— ê¼¬ì¹˜ ê°ì§€ë¨ (ê·¼ì²˜: {nearbySkewers.Count}ê°œ, ë¶™ìŒ: {(attachedSkewer != null ? 1 : 0)}ê°œ)");
             }
             else
             {
-                Debug.Log($"Á¢½Ã {gameObject.name} ±ÙÃ³¿¡ ²¿Ä¡°¡ ¾øÀ½");
+                Debug.Log($"ì ‘ì‹œ {gameObject.name} ê·¼ì²˜ì— ê¼¬ì¹˜ê°€ ì—†ìŒ");
             }
         }
     }
@@ -142,20 +142,20 @@ public class PlateController : MonoBehaviour
         {
             Debug.Log("Skewer grabbed and detached from plate");
             attachedSkewer = null;
-            // ¹°¸® ¼³Á¤Àº °Çµå¸®Áö ¾ÊÀ½ - ¿ø·¡ »óÅÂ ±×´ë·Î
+            // ë¬¼ë¦¬ ì„¤ì •ì€ ê±´ë“œë¦¬ì§€ ì•ŠìŒ - ì›ë˜ ìƒíƒœ ê·¸ëŒ€ë¡œ
         }
     }
 
-    // À¯·ÉÀÌ ¸ÔÀ» ¼ö ÀÖ´Â ²¿Ä¡ ¹İÈ¯ (°¡Àå °¡±î¿î °Í)
+    // ìœ ë ¹ì´ ë¨¹ì„ ìˆ˜ ìˆëŠ” ê¼¬ì¹˜ ë°˜í™˜ (ê°€ì¥ ê°€ê¹Œìš´ ê²ƒ)
     public GameObject GetClosestSkewer()
     {
-        // ºÙ¾îÀÖ´Â ²¿Ä¡°¡ ÀÖÀ¸¸é ¿ì¼± ¹İÈ¯
+        // ë¶™ì–´ìˆëŠ” ê¼¬ì¹˜ê°€ ìˆìœ¼ë©´ ìš°ì„  ë°˜í™˜
         if (attachedSkewer != null)
         {
             return attachedSkewer.gameObject;
         }
 
-        // ±ÙÃ³ ²¿Ä¡ Áß °¡Àå °¡±î¿î °Í ¹İÈ¯
+        // ê·¼ì²˜ ê¼¬ì¹˜ ì¤‘ ê°€ì¥ ê°€ê¹Œìš´ ê²ƒ ë°˜í™˜
         if (nearbySkewers.Count == 0)
             return null;
 
@@ -164,7 +164,7 @@ public class PlateController : MonoBehaviour
 
         foreach (SkewerController skewer in nearbySkewers)
         {
-            if (skewer == null) continue; // ÆÄ±«µÈ ¿ÀºêÁ§Æ® Ã¼Å©
+            if (skewer == null) continue; // íŒŒê´´ëœ ì˜¤ë¸Œì íŠ¸ ì²´í¬
 
             float distance = Vector3.Distance(transform.position, skewer.transform.position);
             if (distance < closestDistance)
@@ -181,27 +181,27 @@ public class PlateController : MonoBehaviour
         SkewerController skewer = skewerObj.GetComponent<SkewerController>();
         if (skewer == null) return;
 
-        // ºÙ¾îÀÖ´Â ²¿Ä¡ÀÎ °æ¿ì
+        // ë¶™ì–´ìˆëŠ” ê¼¬ì¹˜ì¸ ê²½ìš°
         if (attachedSkewer == skewer)
         {
             attachedSkewer = null;
             if (showDebugMessages)
             {
-                Debug.Log("ºÙ¾îÀÖ´ø ²¿Ä¡°¡ Á¦°ÅµÊ");
+                Debug.Log("ë¶™ì–´ìˆë˜ ê¼¬ì¹˜ê°€ ì œê±°ë¨");
             }
         }
 
-        // ±ÙÃ³ ²¿Ä¡ ¸®½ºÆ®¿¡¼­ Á¦°Å
+        // ê·¼ì²˜ ê¼¬ì¹˜ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì œê±°
         if (nearbySkewers.Contains(skewer))
         {
             nearbySkewers.Remove(skewer);
             if (showDebugMessages)
             {
-                Debug.Log($"±ÙÃ³ ²¿Ä¡ Á¦°ÅµÊ. ³²Àº ²¿Ä¡: {nearbySkewers.Count}°³");
+                Debug.Log($"ê·¼ì²˜ ê¼¬ì¹˜ ì œê±°ë¨. ë‚¨ì€ ê¼¬ì¹˜: {nearbySkewers.Count}ê°œ");
             }
         }
 
-        // »óÅÂ ¾÷µ¥ÀÌÆ®
+        // ìƒíƒœ ì—…ë°ì´íŠ¸
         hasSkewerNearby = nearbySkewers.Count > 0 || attachedSkewer != null;
     }
 
@@ -209,11 +209,11 @@ public class PlateController : MonoBehaviour
     {
         if (attachPoint != null)
         {
-            //½º³À ¹üÀ§(»¡°­/ÃÊ·Ï)
+            //ìŠ¤ëƒ… ë²”ìœ„(ë¹¨ê°•/ì´ˆë¡)
             Gizmos.color = attachedSkewer != null ? Color.red : Color.green;
             Gizmos.DrawWireSphere(attachPoint.position, snapDistance);
 
-            //°¨Áö ¹üÀ§(³ë¶û/È¸»ö)
+            //ê°ì§€ ë²”ìœ„(ë…¸ë‘/íšŒìƒ‰)
             Gizmos.color = hasSkewerNearby ? Color.yellow : Color.gray;
             Gizmos.DrawWireSphere(transform.position, detectionRange);
         }
