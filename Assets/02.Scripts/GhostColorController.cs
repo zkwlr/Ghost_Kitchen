@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GhostColorController : MonoBehaviour
 {
-    [Header("»ö»ó ¼³Á¤")]
+    [Header("ìƒ‰ìƒ ì„¤ì •")]
     public Color normalColor = Color.white;
     public Color angryColor = Color.red;
 
-    [Header("¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤")]
+    [Header("ì• ë‹ˆë©”ì´ì…˜ ì„¤ì •")]
     public float colorChangeSpeed = 2f;
 
     private GhostPreferenceSystem parentGhost;
@@ -23,7 +23,7 @@ public class GhostColorController : MonoBehaviour
 
         if (ghostRenderer != null && ghostRenderer.material != null)
         {
-            // Base Map »ö»ó °¡Á®¿À±â
+            // Base Map ìƒ‰ìƒ ê°€ì ¸ì˜¤ê¸°
             if (ghostRenderer.material.HasProperty("_BaseColor"))
             {
                 originalColor = ghostRenderer.material.GetColor("_BaseColor");
@@ -42,7 +42,7 @@ public class GhostColorController : MonoBehaviour
 
         if (parentGhost == null)
         {
-            Debug.LogError("ºÎ¸ğ ¿ÀºêÁ§Æ®¿¡¼­ GhostPreferenceSystemÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ì—ì„œ GhostPreferenceSystemì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
         }
     }
 
@@ -50,7 +50,7 @@ public class GhostColorController : MonoBehaviour
     {
         if (parentGhost == null || ghostRenderer == null) return;
 
-        // ºÎ¸ğÀÇ »óÅÂ¿¡ µû¶ó ¸ñÇ¥ »ö»ó °áÁ¤
+        // ë¶€ëª¨ì˜ ìƒíƒœì— ë”°ë¼ ëª©í‘œ ìƒ‰ìƒ ê²°ì •
         if (parentGhost.isAngry)
         {
             targetColor = angryColor;
@@ -60,7 +60,7 @@ public class GhostColorController : MonoBehaviour
             targetColor = normalColor;
         }
 
-        // ÇöÀç Base Map »ö»ó °¡Á®¿À±â
+        // í˜„ì¬ Base Map ìƒ‰ìƒ ê°€ì ¸ì˜¤ê¸°
         Color currentColor;
         if (ghostRenderer.material.HasProperty("_BaseColor"))
         {
@@ -75,10 +75,10 @@ public class GhostColorController : MonoBehaviour
             currentColor = ghostRenderer.material.color;
         }
 
-        // ºÎµå·´°Ô »ö»ó º¯°æ
+        // ëª©í‘œ ìƒ‰ìƒìœ¼ë¡œ ë¶€ë“œëŸ½ê²Œ ì „í™˜
         Color newColor = Color.Lerp(currentColor, targetColor, colorChangeSpeed * Time.deltaTime);
 
-        // Base Map »ö»ó ¼³Á¤
+        // Base Map ìƒ‰ìƒ ì—…ë°ì´íŠ¸
         if (ghostRenderer.material.HasProperty("_BaseColor"))
         {
             ghostRenderer.material.SetColor("_BaseColor", newColor);
