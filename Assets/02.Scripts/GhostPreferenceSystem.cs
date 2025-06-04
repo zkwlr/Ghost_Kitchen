@@ -124,7 +124,14 @@ public class GhostPreferenceSystem : MonoBehaviour
                 Debug.Log("������ �����Ͽ� ������ϴ�!");
             var gfa = gameObject.GetComponent<GhostFollowAndAttack>();
             int gainedScore = 1;
+
+            if (gfa != null)
+            {
+                gainedScore = gfa.GetScoreValue();
+            }
+
             Destroy(skewer);
+
             if (gameObject.CompareTag("LG"))
             {
                 Destroy(gameObject); // LG_01

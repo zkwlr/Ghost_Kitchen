@@ -5,7 +5,6 @@ public class ScoreManager : MonoBehaviour
 {
     // ───────────────────────────────────────────────────────
     // 1) 싱글톤 인스턴스
-    // 다른 스크립트에서 ScoreManager.Instance로 접근 가능
     public static ScoreManager Instance { get; private set; }
 
     [Header("초기 점수 설정")]
@@ -15,8 +14,8 @@ public class ScoreManager : MonoBehaviour
     private int currentScore;
 
     // 점수가 변경될 때(올라갈 때) 호출할 이벤트
-    // UI 등이 이 이벤트를 구독해서 화면에 핸들링 가능
-    public UnityEvent<int> OnScoreChanged;
+    // UnityEvent<int>으로 선언 후 즉시 인스턴스화
+    public UnityEvent<int> OnScoreChanged = new UnityEvent<int>();
 
     private void Awake()
     {
@@ -33,7 +32,7 @@ public class ScoreManager : MonoBehaviour
         currentScore = startScore;
 
         // 초기 점수가 필요하다면 이벤트 한 번 발생
-        OnScoreChanged?.Invoke(currentScore);
+        OnScoreChanged.Invoke(currentScore);
     }
 
     /// <summary>
@@ -45,7 +44,7 @@ public class ScoreManager : MonoBehaviour
         if (currentScore < 0) currentScore = 0;
 
         // 점수가 바뀔 때마다 등록된 리스너(예: UI)가 있으면 호출
-        OnScoreChanged?.Invoke(currentScore);
+        OnScoreChanged.Invoke(currentScore);
     }
 
     /// <summary>

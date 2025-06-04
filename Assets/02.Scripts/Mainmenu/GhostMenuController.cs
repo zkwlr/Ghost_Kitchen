@@ -34,11 +34,12 @@ public class GhostMenuController : MonoBehaviour
                     SceneManager.LoadScene("BG_test");
                 break;
 
+            // 기록 신 임시로 메인 신으로 사용
             case MenuType.RecordScene:
                 if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("RecordScene");
+                    FadeManager.Instance.FadeToScene("MainmenuScene");
                 else
-                    SceneManager.LoadScene("RecordScene");
+                    SceneManager.LoadScene("MainmenuScene");
                 break;
 
             case MenuType.Retry:
