@@ -104,6 +104,42 @@ public class GhostPreferenceSystem : MonoBehaviour
             if (showDebugMessages)
                 Debug.Log("������ ȭ�����ϴ�!");
         }
+
+        // 싫어하는 음식이 없으면 satisfied 상태
+        else if (hatedCount == 0)
+        {
+            BecomeSatisfied();
+            CreateEffects(satisfiedEffects);
+
+            if (showDebugMessages)
+                Debug.Log("������ �����Ͽ� ������ϴ�!");
+            var gfa = gameObject.GetComponent<GhostFollowAndAttack>();
+            int gainedScore = 1;
+
+            if (gfa != null)
+            {
+                gainedScore = gfa.GetScoreValue();
+            }
+
+            Destroy(skewer);
+
+            if (gameObject.CompareTag("LG"))
+            {
+                Destroy(gameObject); // LG_01
+                if (gfa != null)
+                {
+                    // 유령이 파괴될 때 점수 추가
+                    ScoreManager.Instance.AddScore(gainedScore);
+                    Debug.Log($"[Destroyer] 충돌 대상 {gameObject.name} 파괴됨");
+                    Debug.Log($"[ScoreManager] 점수 증가! 현재 점수: {ScoreManager.Instance.GetScore()}");
+                }
+                else
+                {
+                    Debug.Log("[Destroyer] 메인 메뉴 충돌");
+                }
+
+            }
+        }
         else if (totalIngredients < 3)
         {
             // 2����: ��ᰡ 3�� �̸��̸� ȭ��
