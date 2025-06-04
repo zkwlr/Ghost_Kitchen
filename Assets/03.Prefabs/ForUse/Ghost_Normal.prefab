@@ -104,6 +104,7 @@ MonoBehaviour:
   attackRange: 3
   attackInterval: 2
   damageAmount: 1
+  scoreValue: 1
   plateDetectionRange: 5
   plateTag: Plate
   plateCheckInterval: 1

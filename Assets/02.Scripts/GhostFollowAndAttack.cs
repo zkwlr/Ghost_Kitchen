@@ -21,10 +21,15 @@ public class GhostFollowAndAttack : MonoBehaviour
     [Header("공격력")]
     public int damageAmount = 10;
 
+
+    [Header("이 유령이 파괴될 때 주어질 점수")]
+    public int scoreValue = 1;      // ← 인스펙터에서 각 유령별로 조절 가능
+
     [Header("접시 음식 감지")]
     public float plateDetectionRange = 5f; // 접시 감지 범위
     public string plateTag = "Plate"; // 접시 태그
     public float plateCheckInterval = 1f; // 접시 확인 주기
+
 
     float attackTimer = 0f;
     float plateCheckTimer = 0f;
@@ -103,6 +108,14 @@ public class GhostFollowAndAttack : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 이 유령이 파괴(사망)되는 시점에 점수 값을 얻기 위한 접근자 메서드입니다.
+    /// </summary>
+    public int GetScoreValue()
+    {
+        return scoreValue;
+
 
     private void CheckForPlateFood()
     {
