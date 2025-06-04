@@ -1,13 +1,19 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class ScoreTextUI : MonoBehaviour
 {
-    [Header("점수 표시용 TextMeshProUGUI")]
-    public TextMeshProUGUI scoreText; // Hierarchy의 ScoreText와 연결
+    [Header("점수 표시용 UnityEngine.UI.Text")]
+    public Text scoreText; // Hierarchy의 ScoreText(Text)와 연결
 
     private void Start()
     {
+        if (scoreText == null)
+        {
+            Debug.LogError("ScoreTextUI: scoreText가 할당되지 않았습니다!");
+            return;
+        }
+
         if (ScoreManager.Instance == null)
         {
             Debug.LogError("ScoreManager를 찾을 수 없습니다!");
@@ -31,6 +37,7 @@ public class ScoreTextUI : MonoBehaviour
     // ScoreManager에서 점수가 바뀔 때마다 호출됨
     private void OnScoreChanged(int newScore)
     {
-        scoreText.text = $"Score: {newScore}";
+        if (scoreText != null)
+            scoreText.text = $"Score: {newScore}";
     }
 }

@@ -29,16 +29,17 @@ public class GhostMenuController : MonoBehaviour
         {
             case MenuType.Start:
                 if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("background_develophdh");
+                    FadeManager.Instance.FadeToScene("BG_test");
                 else
-                    SceneManager.LoadScene("background_develophdh");
+                    SceneManager.LoadScene("BG_test");
                 break;
 
+            // 기록 신 임시로 메인 신으로 사용
             case MenuType.RecordScene:
                 if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("RecordScene");
+                    FadeManager.Instance.FadeToScene("MainmenuScene");
                 else
-                    SceneManager.LoadScene("RecordScene");
+                    SceneManager.LoadScene("MainmenuScene");
                 break;
 
             case MenuType.Retry:
