@@ -66,7 +66,7 @@ public class GhostFollowAndAttack : MonoBehaviour
 
     void Update()
     {
-        
+
         if (targetHealth == null)
             return;
 
@@ -97,10 +97,10 @@ public class GhostFollowAndAttack : MonoBehaviour
             {
                 attackTimer = 0f;
 
-               
+
                 // 1) Attack 트리거 발동 → Attack 애니메이션 재생
                 animator.SetTrigger("attackTrigger");
-                
+
                 // 2) Well에 데미지 적용
                 targetHealth.TakeDamage(damageAmount);
                 Debug.Log($"{gameObject.name} attacked {targetHealth.gameObject.name} for {damageAmount}");
@@ -115,7 +115,7 @@ public class GhostFollowAndAttack : MonoBehaviour
     public int GetScoreValue()
     {
         return scoreValue;
-
+    }
 
     private void CheckForPlateFood()
     {
@@ -149,7 +149,7 @@ public class GhostFollowAndAttack : MonoBehaviour
         if (preferenceSystem != null)
         {
             List<string> ingredients = preferenceSystem.GetIngredientsOnSkewer(skewer);
-            preferenceSystem.AnalyzeIngredientsAndReact(ingredients,skewer);
+            preferenceSystem.AnalyzeIngredientsAndReact(ingredients, skewer);
         }
         else
         {
