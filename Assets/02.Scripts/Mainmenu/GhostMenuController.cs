@@ -29,9 +29,9 @@ public class GhostMenuController : MonoBehaviour
         {
             case MenuType.Start:
                 if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("background_develophdh");
+                    FadeManager.Instance.FadeToScene("BG_test");
                 else
-                    SceneManager.LoadScene("background_develophdh");
+                    SceneManager.LoadScene("BG_test");
                 break;
 
             case MenuType.RecordScene:
