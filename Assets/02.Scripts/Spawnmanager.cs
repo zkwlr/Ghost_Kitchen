@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [Header("Àû ½ºÆù ¼³Á¤")]
+    [Header("ì  ìƒì„± ì„¤ì •")]
     public GameObject[] enemyPrefabs;
     [Range(0f, 100f)]
-    public float[] spawnChances; // enemyPrefabs¿Í 1:1 ´ëÀÀ
+    public float[] spawnChances; // enemyPrefabsì™€ 1:1 ëŒ€ì‘
 
     public Transform[] spawnPoints;
     public float spawnInterval = 3f;
 
-    [Header("µğ¹ö±×")]
+    [Header("ë””ë²„ê¹…")]
     public bool showDebugMessages = true;
 
     private float timer = 0f;
 
     void Start()
     {
-        // ¹è¿­ Å©±â ¸ÂÃß±â
+        // ë°°ì—´ í¬ê¸° ë§ì¶”ê¸°
         ValidateArraySizes();
-        // È®·ü °ËÁõ
+        // í™•ë¥  ê²€ì¦
         ValidateSpawnChances();
     }
 
@@ -39,16 +39,16 @@ public class SpawnManager : MonoBehaviour
     {
         if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0)
         {
-            Debug.LogWarning("Àû ÇÁ¸®ÆÕÀÌ³ª ½ºÆù Æ÷ÀÎÆ®°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogWarning("ì  í”„ë¦¬íŒ¹ì´ë‚˜ ìŠ¤í° í¬ì¸íŠ¸ê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!");
             return;
         }
 
-        // È®·ü ±â¹İÀ¸·Î Àû ¼±ÅÃ
+        // í™•ë¥  ê¸°ë°˜ìœ¼ë¡œ ì  ì„ íƒ
         GameObject selectedEnemy = SelectEnemyByChance();
 
         if (selectedEnemy != null)
         {
-            // ·£´ı ½ºÆù À§Ä¡ ¼±ÅÃ
+            // ëœë¤ ìŠ¤í° ìœ„ì¹˜ ì„ íƒ
             int spawnIndex = Random.Range(0, spawnPoints.Length);
             Vector3 spawnPos = spawnPoints[spawnIndex].position;
 
@@ -56,14 +56,14 @@ public class SpawnManager : MonoBehaviour
 
             if (showDebugMessages)
             {
-                Debug.Log($"{selectedEnemy.name} ½ºÆùµÊ at {spawnPoints[spawnIndex].name}");
+                Debug.Log($"{selectedEnemy.name} ìƒì„±ë¨ at {spawnPoints[spawnIndex].name}");
             }
         }
     }
 
     private GameObject SelectEnemyByChance()
     {
-        // ÀüÃ¼ È®·ü ÇÕ°è °è»ê
+        // ì „ì²´ í™•ë¥  í•©ê³„ ê³„ì‚°
         float totalChance = 0f;
         for (int i = 0; i < spawnChances.Length; i++)
         {
@@ -72,15 +72,15 @@ public class SpawnManager : MonoBehaviour
 
         if (totalChance <= 0f)
         {
-            Debug.LogWarning("¸ğµç ÀûÀÇ ½ºÆù È®·üÀÌ 0ÀÔ´Ï´Ù!");
+            Debug.LogWarning("ëª¨ë“  ì ì˜ ìŠ¤í° í™•ë¥ ì´ 0ì…ë‹ˆë‹¤!");
             return null;
         }
 
-        // 0ºÎÅÍ ÀüÃ¼ È®·ü ÇÕ°è±îÁö ·£´ı °ª »ı¼º
+        // 0ë¶€í„° ì „ì²´ í™•ë¥  í•©ê³„ê¹Œì§€ ëœë¤ ê°’ ìƒì„±
         float randomValue = Random.Range(0f, totalChance);
         float currentChance = 0f;
 
-        // È®·ü¿¡ µû¶ó Àû ¼±ÅÃ
+        // í™•ë¥ ì— ë”°ë¼ ì  ì„ íƒ
         for (int i = 0; i < enemyPrefabs.Length; i++)
         {
             currentChance += spawnChances[i];
@@ -90,13 +90,13 @@ public class SpawnManager : MonoBehaviour
             }
         }
 
-        // È¤½Ã ¸ğ¸¦ °æ¿ì Ã¹ ¹øÂ° Àû ¹İÈ¯
+        // í˜¹ì‹œ ëª¨ë¥¼ ê²½ìš° ì²« ë²ˆì§¸ ì  ë°˜í™˜
         return enemyPrefabs[0];
     }
 
     private void ValidateArraySizes()
     {
-        // spawnChances ¹è¿­ÀÌ enemyPrefabs¿Í Å©±â°¡ ´Ù¸£¸é ¸ÂÃçÁÖ±â
+        // spawnChances ë°°ì—´ì„ enemyPrefabsì™€ í¬ê¸°ê°€ ë‹¤ë¥´ë©´ ë§ì¶°ì£¼ê¸°
         if (spawnChances.Length != enemyPrefabs.Length)
         {
             float[] newSpawnChances = new float[enemyPrefabs.Length];
@@ -109,7 +109,7 @@ public class SpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    newSpawnChances[i] = 10f; // ±âº»°ª
+                    newSpawnChances[i] = 10f; // ê¸°ë³¸ê°’
                 }
             }
 
@@ -117,7 +117,7 @@ public class SpawnManager : MonoBehaviour
 
             if (showDebugMessages)
             {
-                Debug.Log("SpawnChances ¹è¿­ Å©±â¸¦ EnemyPrefabs¿¡ ¸ÂÃç Á¶Á¤Çß½À´Ï´Ù.");
+                Debug.Log("SpawnChances ë°°ì—´ í¬ê¸°ë¥¼ EnemyPrefabsì— ë§ê²Œ ì¡°ì •í–ˆìŠµë‹ˆë‹¤.");
             }
         }
     }
@@ -132,14 +132,14 @@ public class SpawnManager : MonoBehaviour
 
         if (showDebugMessages)
         {
-            Debug.Log($"ÀüÃ¼ ½ºÆù È®·ü ÇÕ°è: {totalChance}");
+            Debug.Log($"ì „ì²´ ìŠ¤í° í™•ë¥  í•©ê³„: {totalChance}");
 
             for (int i = 0; i < enemyPrefabs.Length; i++)
             {
                 if (i < spawnChances.Length)
                 {
                     float percentage = (spawnChances[i] / totalChance) * 100f;
-                    Debug.Log($"{enemyPrefabs[i].name}: {percentage:F1}% È®·ü (°¡ÁßÄ¡: {spawnChances[i]})");
+                    Debug.Log($"{enemyPrefabs[i].name}: {percentage:F1}% í™•ë¥  (ê°€ì¤‘ì¹˜: {spawnChances[i]})");
                 }
             }
         }

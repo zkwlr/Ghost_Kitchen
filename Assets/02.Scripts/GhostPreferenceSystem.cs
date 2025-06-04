@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class GhostPreferenceSystem : MonoBehaviour
 {
-    [Header("���� ��ȣ�� ����")]
-    public List<string> favoriteIngredients = new List<string>(); // �����ϴ� ���
-    public List<string> hatedIngredients = new List<string>();    // �Ⱦ��ϴ� ���
+    [Header("유령 선호도 설정")]
+    public List<string> favoriteIngredients = new List<string>(); // 좋아하는 재료
+    public List<string> hatedIngredients = new List<string>();    // 싫어하는 재료
 
-    [Header("�ൿ ��ȭ")]
-    public GameObject[] satisfiedEffects;  // �������� �� ����Ʈ
-    public GameObject[] angryEffects;      // ȭ���� �� ����Ʈ
+    [Header("행동 변화")]
+    public GameObject[] satisfiedEffects;  // 만족했을 때 이펙트
+    public GameObject[] angryEffects;      // 화났을 때 이펙트
     public GameObject[] normalEffects;
 
-   [Header("���� ����")]
+   [Header("분노 상태")]
     public bool isAngry = false;
 
-    [Header("���� ��ȭ")]
-    public float angrySpeedMultiplier = 2f;    // ȭ���� �� �ӵ� ���
-    public float angryDamageMultiplier = 1.5f; // ȭ���� �� ���ݷ� ���
-    public float angryAttackSpeedMultiplier = 2f; // ���� �ӵ� ���
+    [Header("분노 변화")]
+    public float angrySpeedMultiplier = 2f;    // 화났을 때 속도 배수
+    public float angryDamageMultiplier = 1.5f; // 화났을 때 공격력 배수
+    public float angryAttackSpeedMultiplier = 2f; // 공격 속도 배수
 
-    [Header("�����")]
+    [Header("디버깅")]
     public bool showDebugMessages = true;
 
     private GhostFollowAndAttack ghostAI;
@@ -50,17 +50,17 @@ public class GhostPreferenceSystem : MonoBehaviour
 
         if (showDebugMessages)
         {
-            Debug.Log($"��ġ ���: {string.Join(", ", ingredients)}");
+            Debug.Log($"꼬치 재료: {string.Join(", ", ingredients)}");
         }
 
-        // ��� �м� �� �ൿ ����
+        // 재료 분석 후 행동 결정
         AnalyzeIngredientsAndReact(ingredients, skewer);
     }
     public List<string> GetIngredientsOnSkewer(GameObject skewer)
     {
         List<string> ingredients = new List<string>();
 
-        // ��ġ�� ��� �ڽ� ������Ʈ�� Ȯ��
+        // 꼬치의 모든 자식 오브젝트를 확인
         foreach (Transform child in skewer.transform)
         {
             IngredientItem ingredientItem = child.GetComponent<IngredientItem>();
@@ -79,7 +79,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         int hatedCount = 0;
         int totalIngredients = ingredients.Count;
 
-        // ��� �м�
+        // 재료 분석
         foreach (string ingredient in ingredients)
         {
             if (favoriteIngredients.Contains(ingredient))
@@ -90,19 +90,19 @@ public class GhostPreferenceSystem : MonoBehaviour
 
         if (showDebugMessages)
         {
-            Debug.Log($"�����ϴ� ���: {favoriteCount}��, �Ⱦ��ϴ� ���: {hatedCount}��");
+            Debug.Log($"좋아하는 재료: {favoriteCount}개, 싫어하는 재료: {hatedCount}개");
         }
 
-        // �ൿ ����
+        // 행동 결정
         if (hatedCount > 0)
         {
-            // �Ⱦ��ϴ� ��ᰡ ������ ȭ��
+            // 싫어하는 재료가 있으면 화남
             BecomeAngry();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
             if (showDebugMessages)
-                Debug.Log("������ ȭ�����ϴ�!");
+                Debug.Log("유령이 화났습니다!");
         }
 
         // 싫어하는 음식이 없으면 satisfied 상태
@@ -112,7 +112,7 @@ public class GhostPreferenceSystem : MonoBehaviour
             CreateEffects(satisfiedEffects);
 
             if (showDebugMessages)
-                Debug.Log("������ �����Ͽ� ������ϴ�!");
+                Debug.Log("유령이 만족하여 사라집니다!");
             var gfa = gameObject.GetComponent<GhostFollowAndAttack>();
             int gainedScore = 1;
 
@@ -142,22 +142,22 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else if (totalIngredients < 3)
         {
-            // 2����: ��ᰡ 3�� �̸��̸� ȭ��
+            // 조건: 재료가 3개 미만이면 화남
             BecomeAngry();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
             if (showDebugMessages)
-                Debug.Log($"������ ȭ�����ϴ�! (��ᰡ {totalIngredients}���� ������)");
+                Debug.Log($"유령이 화났습니다! (재료가 {totalIngredients}개로 부족함)");
         }
-        else if (favoriteCount >= 1) // �����ϴ� ��ᰡ 1�� �̻��̸� ����
+        else if (favoriteCount >= 1) // 좋아하는 재료가 1개 이상이면 만족
         {
-            // �����ϸ� �����
+            // 만족하면 사라짐
             BecomeSatisfied();
             CreateEffects(satisfiedEffects);
 
             if (showDebugMessages)
-                Debug.Log("������ �����Ͽ� ������ϴ�!");
+                Debug.Log("유령이 만족하여 사라집니다!");
             var gfa = gameObject.GetComponent<GhostFollowAndAttack>();
             int gainedScore = 1;
 
@@ -187,9 +187,9 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else
         {
-            // ����� ���� - �׳� �����
+            // 중립적 반응 - 그냥 사라짐
             if (showDebugMessages)
-                Debug.Log("������ �������մϴ�.");
+                Debug.Log("유령이 사라집니다.");
 
             Destroy(skewer);
             CreateEffects(normalEffects);
@@ -212,14 +212,14 @@ public class GhostPreferenceSystem : MonoBehaviour
 
             if (showDebugMessages)
             {
-                Debug.Log($"���� ����ȭ! �̵��ӵ�: {ghostAI.moveSpeed:F1}, ���ݷ�: {ghostAI.damageAmount:F1}, ���ݰ���: {ghostAI.attackInterval:F2}��");
+                Debug.Log($"분노 강화됨! 이동속도: {ghostAI.moveSpeed:F1}, 공격력: {ghostAI.damageAmount:F1}, 공격간격: {ghostAI.attackInterval:F2}초");
             }
         }
     }
 
     private void BecomeSatisfied()
     {
-        // ������ ������ �ð��� ȿ��
+        // 만족한 유령은 잠시 초록색 효과
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {

@@ -18,8 +18,8 @@ public class IngredientItem : MonoBehaviour
     public IngredientType ingredientType;
 
     [Header("Scale Settings")]
-    public Vector3 originalScale; // ¿øº» Å©±â ÀúÀå
-    public Vector3 skewerScale = new Vector3(0.1f, 0.1f, 0.1f); // ²¿Ä¡¿¡ ²ÈÈú ¶§ Å©±â
+    public Vector3 originalScale; // ì›ë³¸ í¬ê¸° ì €ì¥
+    public Vector3 skewerScale = new Vector3(0.1f, 0.1f, 0.1f); // ê¼¬ì¹˜ì— ë¶™ì„ ë•Œ í¬ê¸°
 
     [Header("Skewer Settings")]
     public bool isOnSkewer = false;
@@ -31,7 +31,7 @@ public class IngredientItem : MonoBehaviour
 
     void Start()
     {
-        // ¿øº» Å©±â ÀúÀå
+        // ì›ë³¸ í¬ê¸° ì €ì¥
         if (originalScale == Vector3.zero)
         {
             originalScale = transform.localScale;
@@ -43,7 +43,7 @@ public class IngredientItem : MonoBehaviour
         
     }
 
-    // ²¿Ä¡¿¡ ºÙ¾úÀ» ¶§ È£Ãâ
+    // ê¼¬ì¹˜ì— ë¶™ì—ˆì„ ë•Œ í˜¸ì¶œ
     public void AttachToSkewer(SkewerController skewer, int slotIndex)
     {
         isOnSkewer = true;
@@ -51,23 +51,23 @@ public class IngredientItem : MonoBehaviour
         startSlotIndex = slotIndex;
         parentSkewer = skewer.transform;
 
-        // ¿øº» ½ºÄÉÀÏ º¸Á¸ (Àı´ë°ªÀ¸·Î ÀúÀå)
+        // ì›ë³¸ ìŠ¤ì¼€ì¼ ë°±ì—… (ì•ˆì „ê°’ìœ¼ë¡œ ì €ì¥)
         if (originalScale == Vector3.zero)
         {
             originalScale = transform.localScale;
         }
 
-        // ºÎ¸ğ ¼³Á¤
+        // ë¶€ëª¨ ì„¤ì •
         transform.SetParent(skewer.transform);
 
-        // ¿øÇÏ´Â Å©±â¸¦ Á÷Á¢ ¼³Á¤ (¿ª½ºÄÉÀÏ °è»ê ¾øÀÌ)
+        // ì›í•˜ëŠ” í¬ê¸°ë¥¼ ì§ì ‘ ì„¤ì • (ë¶€ëª¨ìŠ¤ì¼€ì¼ ì˜í–¥ ë¬´ì‹œ)
         transform.localScale = skewerScale;
 
         Debug.Log($"{gameObject.name} attached with fixed scale: {skewerScale}");
     }
 
 
-    // ²¿Ä¡¿¡¼­ ºĞ¸®µÉ ¶§ È£Ãâ
+    // ê¼¬ì¹˜ì—ì„œ ë¶„ë¦¬ë  ë•Œ í˜¸ì¶œ
     public void DetachFromSkewer()
     {
         isOnSkewer = false;
@@ -75,20 +75,20 @@ public class IngredientItem : MonoBehaviour
         startSlotIndex = -1;
         parentSkewer = null;
 
-        // ¿øº» Å©±â·Î º¹¿ø
+        // ì›ë³¸ í¬ê¸°ë¡œ ë³µì›
         transform.localScale = originalScale;
 
         Debug.Log($"{gameObject.name} detached, restored to original scale: {originalScale}");
     }
 
-    // ²¿Ä¡¿¡¼­ÀÇ Å©±â ¾÷µ¥ÀÌÆ®
+    // ê¼¬ì¹˜ìƒì—ì„œ í¬ê¸° ì—…ë°ì´íŠ¸
     private void UpdateScaleOnSkewer()
     {
         if (parentSkewer == null) return;
 
-        // °£´ÜÇÏ°Ô ¿øÇÏ´Â Å©±â·Î Á÷Á¢ ¼³Á¤
+        // í•­ìƒí•˜ê²Œ ì›í•˜ëŠ” í¬ê¸°ë¡œ ê°•ì œ ì„¤ì •
         transform.localScale = skewerScale;
 
-        // ¿ª½ºÄÉÀÏ °è»ê Á¦°Å - ÀÌ°Ô ¹®Á¦¿´À½!
+        // ë¶€ëª¨ìŠ¤ì¼€ì¼ ì˜í–¥ ë¬´ì‹œ - ì´ê²Œ í•µì‹¬ì…ë‹ˆë‹¤!
     }
 }
