@@ -219,12 +219,7 @@ public class GhostPreferenceSystem : MonoBehaviour
 
     private void BecomeSatisfied()
     {
-        // 만족한 유령은 잠시 초록색 효과
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material.color = Color.green;
-        }
+        
     }
 
     private void CreateEffects(GameObject[] effects)
