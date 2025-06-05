@@ -94,7 +94,18 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
 
         // 행동 결정
-        if (hatedCount > 0)
+
+        if (totalIngredients < 3)
+        {
+            // 조건: 재료가 3개 미만이면 화남
+            BecomeAngry();
+            CreateEffects(angryEffects);
+            Destroy(skewer);
+
+            if (showDebugMessages)
+                Debug.Log($"유령이 화났습니다! (재료가 {totalIngredients}개로 부족함)");
+        }
+        else if (hatedCount > 0)
         {
             // 싫어하는 재료가 있으면 화남
             BecomeAngry();
@@ -104,7 +115,6 @@ public class GhostPreferenceSystem : MonoBehaviour
             if (showDebugMessages)
                 Debug.Log("유령이 화났습니다!");
         }
-
         // 싫어하는 음식이 없으면 satisfied 상태
         else if (hatedCount == 0)
         {
@@ -139,16 +149,6 @@ public class GhostPreferenceSystem : MonoBehaviour
                 }
 
             }
-        }
-        else if (totalIngredients < 3)
-        {
-            // 조건: 재료가 3개 미만이면 화남
-            BecomeAngry();
-            CreateEffects(angryEffects);
-            Destroy(skewer);
-
-            if (showDebugMessages)
-                Debug.Log($"유령이 화났습니다! (재료가 {totalIngredients}개로 부족함)");
         }
         else if (favoriteCount >= 1) // 좋아하는 재료가 1개 이상이면 만족
         {
@@ -187,9 +187,9 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else
         {
-            // 중립적 반응 - 그냥 사라짐
+            // 중립적 반응 - 꼬치만 사라짐
             if (showDebugMessages)
-                Debug.Log("유령이 사라집니다.");
+                Debug.Log("꼬치만 사라집니다.");
 
             Destroy(skewer);
             CreateEffects(normalEffects);
