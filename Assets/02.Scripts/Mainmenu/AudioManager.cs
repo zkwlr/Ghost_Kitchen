@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
         instance = this;
 
         // 이 오브젝트를 씬 전환 시에도 파괴하지 않음
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         // AudioSource에 이미 할당된 AudioClip을 한 번 재생
         AudioSource audioSource = GetComponent<AudioSource>();
