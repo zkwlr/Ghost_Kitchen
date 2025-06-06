@@ -78,6 +78,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sausage
       objectReference: {fileID: 0}
+    - target: {fileID: 687958686298028794, guid: a1e7126b78c286248b29f182402a3bdf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Food
+      objectReference: {fileID: 0}
     - target: {fileID: 7109089548913734380, guid: a1e7126b78c286248b29f182402a3bdf,
         type: 3}
       propertyPath: m_CollisionDetection

@@ -9,6 +9,7 @@ TagManager:
   - Skewer
   - floor
   - Plate
+  - Food
   layers:
   - Default
   - TransparentFX
