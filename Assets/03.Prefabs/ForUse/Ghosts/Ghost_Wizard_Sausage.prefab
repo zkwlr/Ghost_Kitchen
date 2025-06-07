@@ -135,6 +135,8 @@ MonoBehaviour:
   angrySpeedMultiplier: 2
   angryDamageMultiplier: 1.5
   angryAttackSpeedMultiplier: 2
+  baseScore: 10
+  diversityBonusPerType: 5
   showDebugMessages: 1
 --- !u!1 &2751859505347793114
 GameObject:

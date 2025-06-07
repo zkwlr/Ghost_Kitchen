@@ -21,7 +21,7 @@ public class ScoreTextUI : MonoBehaviour
         }
 
         // 1) 초기 점수 표시
-        scoreText.text = $"Score: {ScoreManager.Instance.GetScore()}";
+        scoreText.text = $"{ScoreManager.Instance.GetScore()}";
 
         // 2) ScoreManager.OnScoreChanged 이벤트에 구독
         ScoreManager.Instance.OnScoreChanged.AddListener(OnScoreChanged);
@@ -38,6 +38,6 @@ public class ScoreTextUI : MonoBehaviour
     private void OnScoreChanged(int newScore)
     {
         if (scoreText != null)
-            scoreText.text = $"Score: {newScore}";
+            scoreText.text = $"{newScore}";
     }
 }
