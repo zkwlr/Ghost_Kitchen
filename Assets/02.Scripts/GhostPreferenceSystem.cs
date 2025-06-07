@@ -104,11 +104,16 @@ public class GhostPreferenceSystem : MonoBehaviour
             Debug.Log($"좋아하는 재료: {favoriteCount}개, 싫어하는 재료: {hatedCount}개");
         }
 
-        // 행동 결정
+        // 행동 결정 + 안내문 표시
         if (totalIngredients < 3)
         {
+            // 안내문 표시
+            if (GuideText.Instance != null)
+            {
+            GuideText.Instance.ShowInsufficientIngredientsMessage();
+            }
             // 조건: 재료가 3개 미만이면 화남
-            BecomeAngryByOmission();
+            BecomeAngry();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
@@ -117,6 +122,11 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else if (hatedCount > 0)
         {
+            // 안내문 표시
+            if (GuideText.Instance != null)
+            {
+                GuideText.Instance.ShowHatedIngredientMessage();
+            }
             // 싫어하는 재료가 있으면 화남
             BecomeAngry();
             CreateEffects(angryEffects);
@@ -159,6 +169,11 @@ public class GhostPreferenceSystem : MonoBehaviour
         }
         else
         {
+            //안내문 표시
+            if (GuideText.Instance != null)
+            {
+                GuideText.Instance.ShowNeededIngredientMessage();
+            }
             // 중립적 반응 - 꼬치만 사라짐
             if (showDebugMessages)
                 Debug.Log("꼬치만 사라집니다.");
@@ -196,26 +211,6 @@ public class GhostPreferenceSystem : MonoBehaviour
     }
 
     private void BecomeAngry()
-    {
-        if (ghostAI != null)
-        {
-            isAngry = true;
-            ghostAI.moveSpeed = originalSpeed * angrySpeedMultiplier;
-            ghostAI.damageAmount = (int)(originalDamage * angryDamageMultiplier);
-            ghostAI.attackInterval = originalAttackInterval / angryAttackSpeedMultiplier;
-            Animator animator = GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.speed = angryAttackSpeedMultiplier;
-            }
-
-            if (showDebugMessages)
-            {
-                Debug.Log($"분노 강화됨! 이동속도: {ghostAI.moveSpeed:F1}, 공격력: {ghostAI.damageAmount:F1}, 공격간격: {ghostAI.attackInterval:F2}초");
-            }
-        }
-    }
-private void BecomeAngryByOmission()
     {
         if (ghostAI != null)
         {
