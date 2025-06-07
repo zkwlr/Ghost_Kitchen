@@ -108,7 +108,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         if (totalIngredients < 3)
         {
             // 조건: 재료가 3개 미만이면 화남
-            BecomeAngry();
+            BecomeAngryByOmission();
             CreateEffects(angryEffects);
             Destroy(skewer);
 
@@ -215,7 +215,26 @@ public class GhostPreferenceSystem : MonoBehaviour
             }
         }
     }
+private void BecomeAngryByOmission()
+    {
+        if (ghostAI != null)
+        {
+            isAngry = true;
+            ghostAI.moveSpeed = originalSpeed * angrySpeedMultiplier;
+            ghostAI.damageAmount = (int)(originalDamage * angryDamageMultiplier);
+            ghostAI.attackInterval = originalAttackInterval / angryAttackSpeedMultiplier;
+            Animator animator = GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.speed = angryAttackSpeedMultiplier;
+            }
 
+            if (showDebugMessages)
+            {
+                Debug.Log($"분노 강화됨! 이동속도: {ghostAI.moveSpeed:F1}, 공격력: {ghostAI.damageAmount:F1}, 공격간격: {ghostAI.attackInterval:F2}초");
+            }
+        }
+    }
     private void BecomeSatisfied()
     {
         

@@ -104,7 +104,7 @@ MonoBehaviour:
   attackRange: 3
   attackInterval: 2
   damageAmount: 1
-  scoreValue: 10
+  scoreValue: 3
   plateDetectionRange: 5
   plateTag: Plate
   plateCheckInterval: 1
@@ -136,6 +136,8 @@ MonoBehaviour:
   angrySpeedMultiplier: 2
   angryDamageMultiplier: 1.5
   angryAttackSpeedMultiplier: 2
+  baseScore: 100
+  diversityBonusPerType: 30
   showDebugMessages: 1
 --- !u!1001 &1092741471585585904
 PrefabInstance:
