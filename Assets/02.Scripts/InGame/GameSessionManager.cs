@@ -1,6 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 
 public class GameSessionManager : MonoBehaviour
 {
@@ -13,19 +15,38 @@ public class GameSessionManager : MonoBehaviour
     [Header("게임 결과 씬 이름")]
     public string gameResultSceneName = "GameResultScene";
 
-    private float remainingTime;
-    private bool isGameOver = false;
+    [Header("기록 저장파일명")]
+    public string recordFileName = "records.json";
+
+    [Header("최대 저장 기록 개수")]
+    public int maxRecords = 20;
+
+    float remainingTime;
+    bool isGameOver = false;
+
+    // 기록용 데이터 클래스
+    [Serializable]
+    public class GameRecord
+    {
+        public int score;
+        public string date;   // 기록 시각
+    }
+
+    [Serializable]
+    public class GameRecordList
+    {
+        public List<GameRecord> records = new List<GameRecord>();
+    }
 
     private void Awake()
     {
         remainingTime = gameDuration;
+
         if (wellHealth == null)
         {
-            GameObject wellGO = GameObject.FindGameObjectWithTag("Well");
-            if (wellGO != null)
-                wellHealth = wellGO.GetComponent<Health>();
-            else
-                Debug.LogError("[GameSessionManager] 'Well' 태그 오브젝트를 찾을 수 없습니다.");
+            var wellGO = GameObject.FindGameObjectWithTag("Well");
+            if (wellGO != null) wellHealth = wellGO.GetComponent<Health>();
+            else Debug.LogError("[GameSessionManager] 'Well' 태그 오브젝트를 찾을 수 없습니다.");
         }
     }
 
@@ -57,6 +78,11 @@ public class GameSessionManager : MonoBehaviour
     {
         isGameOver = true;
         Debug.Log($"[GameSessionManager] Game Over! Reason: {reason}");
+
+        // 1) 점수/시간/날짜를 기록에 남긴다
+        SaveRecord();
+
+        // 2) 결과 씬으로 전환
         SceneManager.LoadScene(gameResultSceneName);
     }
 
@@ -67,10 +93,83 @@ public class GameSessionManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 외부에서 남은 시간을 읽어올 수 있도록 public으로 노출
+    /// 현재 남은 시간을 외부에서 읽어올 수 있도록 공개
     /// </summary>
-    public float GetRemainingTime()
+    public float GetRemainingTime() => remainingTime;
+
+    // ────────────────────────────────────────────────────
+    // 기록 저장/불러오기
+    // ────────────────────────────────────────────────────
+
+    private string RecordFilePath
     {
-        return remainingTime;
+        get
+        {
+            return Path.Combine(Application.persistentDataPath, recordFileName);
+        }
+    }
+
+    /// <summary>
+    /// records.json 을 로드하거나, 없으면 새 인스턴스를 리턴
+    /// </summary>
+    private GameRecordList LoadRecordList()
+    {
+        try
+        {
+            if (File.Exists(RecordFilePath))
+            {
+                string json = File.ReadAllText(RecordFilePath);
+                var list = JsonUtility.FromJson<GameRecordList>(json);
+                if (list != null) return list;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("[GameSessionManager] 기록 로드 실패: " + e.Message);
+        }
+        return new GameRecordList();
+    }
+
+    /// <summary>
+    /// currentScore, DateTime.Now 를 JSON 파일에 저장
+    /// </summary>
+    private void SaveRecord()
+    {
+        // 1) 기존 기록 불러오기
+        var list = LoadRecordList();
+
+        // 2) 새로운 기록 추가
+        var rec = new GameRecord
+        {
+            score = ScoreManager.Instance.GetScore(),
+            // timeLeft = remainingTime,
+            date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        };
+        list.records.Add(rec);
+
+        // 3) 예: 점수 내림차순 정렬 후 상위 maxRecords개만 남기기
+        list.records.Sort((a, b) => b.score.CompareTo(a.score));
+        if (list.records.Count > maxRecords)
+            list.records.RemoveRange(maxRecords, list.records.Count - maxRecords);
+
+        // 4) JSON 직렬화 + 파일 쓰기
+        try
+        {
+            string json = JsonUtility.ToJson(list, true);
+            File.WriteAllText(RecordFilePath, json);
+            Debug.Log($"[GameSessionManager] 기록 저장 완료 → {RecordFilePath}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("[GameSessionManager] 기록 저장 실패: " + e.Message);
+        }
+    }
+
+    /// <summary>
+    /// 저장된 모든 기록을 반환
+    /// </summary>
+    public List<GameRecord> GetAllRecords()
+    {
+        return LoadRecordList().records;
     }
 }
