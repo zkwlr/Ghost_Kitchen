@@ -79,11 +79,23 @@ public class GameSessionManager : MonoBehaviour
         isGameOver = true;
         Debug.Log($"[GameSessionManager] Game Over! Reason: {reason}");
 
+        // ★ 스테이지 클리어 시 남은 Well 체력만큼 추가 점수
+        if (reason == "TimeUp")  // 스테이지 클리어
+        {
+            if (wellHealth != null)
+            {
+                int bonus = wellHealth.CurrentHealth;
+                ScoreManager.Instance.AddScore(bonus);
+                Debug.Log($"[GameSessionManager] Stage Clear! Added bonus score: {bonus}");
+            }
+        }
+
         // static 클래스에 결과를 저장
         GameResultData.LastScore = ScoreManager.Instance.GetScore();
         GameResultData.Reason    = (reason == "TimeUp")
             ? GameEndReason.StageClear
             : GameEndReason.GameOver;
+        
         // 1) 점수/시간/날짜를 기록에 남긴다
         SaveRecord();
 
