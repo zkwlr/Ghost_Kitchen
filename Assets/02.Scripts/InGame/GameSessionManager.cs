@@ -6,6 +6,35 @@ using UnityEngine.SceneManagement;
 
 public class GameSessionManager : MonoBehaviour
 {
+    // 싱글톤 인스턴스
+    private static GameSessionManager _instance;
+
+    // 인스턴스에 접근할 때 객체가 없으면 자동 생성
+    public static GameSessionManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // 씬에서 기존 GameSessionManager 찾기
+                _instance = FindObjectOfType<GameSessionManager>();
+
+                // 씬에 없으면 새로 생성
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("GameSessionManager");
+                    _instance = obj.AddComponent<GameSessionManager>();
+                    Debug.Log("[GameSessionManager] 인스턴스가 자동 생성되었습니다.");
+                }
+
+                // 씬 전환 시에도 유지
+                DontDestroyOnLoad(_instance.gameObject);
+            }
+            return _instance;
+        }
+        private set { _instance = value; }
+    }
+
     [Header("게임 제한 시간 (초)")]
     public float gameDuration = 120f;
 
@@ -40,6 +69,18 @@ public class GameSessionManager : MonoBehaviour
 
     private void Awake()
     {
+        // 싱글톤 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);  // 씬 전환 시 파괴되지 않도록 설정
+        }
+        else
+        {
+            Destroy(gameObject);  // 중복 생성 방지
+            return;
+        }
+
         remainingTime = gameDuration;
 
         if (wellHealth == null)
@@ -95,7 +136,7 @@ public class GameSessionManager : MonoBehaviour
         GameResultData.Reason    = (reason == "TimeUp")
             ? GameEndReason.StageClear
             : GameEndReason.GameOver;
-        
+
         // 1) 점수/시간/날짜를 기록에 남긴다
         SaveRecord();
 
