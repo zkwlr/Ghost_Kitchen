@@ -79,6 +79,11 @@ public class GameSessionManager : MonoBehaviour
         isGameOver = true;
         Debug.Log($"[GameSessionManager] Game Over! Reason: {reason}");
 
+        // static 클래스에 결과를 저장
+        GameResultData.LastScore = ScoreManager.Instance.GetScore();
+        GameResultData.Reason    = (reason == "TimeUp")
+            ? GameEndReason.StageClear
+            : GameEndReason.GameOver;
         // 1) 점수/시간/날짜를 기록에 남긴다
         SaveRecord();
 
