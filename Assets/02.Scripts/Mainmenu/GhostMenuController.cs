@@ -3,13 +3,14 @@ using UnityEngine.SceneManagement;  // 씬 전환용
 
 public class GhostMenuController : MonoBehaviour
 {
-    [Header("이 Ghost가 메뉴 중 어떤 기능인지 구분 (Start, Record, Retry, Quit)")]
+    [Header("이 Ghost가 메뉴 중 어떤 기능인지 구분 (Start, Record, Mainmenu, Retry, Quit)")]
     public MenuType menuType = MenuType.Start;
 
     public enum MenuType
     {
         Start,       // 게임 시작
         RecordScene, // 기록 확인용 씬으로 이동
+        MainMenu,   // 메인 메뉴로 이동
         Retry,       // 재시작
         Quit         // 종료
     }
@@ -24,28 +25,37 @@ public class GhostMenuController : MonoBehaviour
         // Destroy(collision.gameObject);
         // Destroy(gameObject);
 
-        // 페이드 매니저를 통해 씬 전환
+        // VRFadeManager를 찾아서 씬 전환
+        VRFadeManager fadeManager = GetVRFadeManager();
+
         switch (menuType)
         {
             case MenuType.Start:
-                if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("BG_test");
+                if (fadeManager != null)
+                    fadeManager.FadeToScene("BG_test");
                 else
                     SceneManager.LoadScene("BG_test");
                 break;
 
-            // 기록 신 임시로 메인 신으로 사용
             case MenuType.RecordScene:
-                if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene("MainmenuScene");
+                if (fadeManager != null)
+                    fadeManager.FadeToScene("RecordScene");
+                else
+                    SceneManager.LoadScene("RecordScene");
+                break;
+
+            case MenuType.MainMenu:
+                if (fadeManager != null)
+                    fadeManager.FadeToScene("MainmenuScene");
                 else
                     SceneManager.LoadScene("MainmenuScene");
                 break;
 
+
             case MenuType.Retry:
                 string currentScene = SceneManager.GetActiveScene().name;
-                if (FadeManager.Instance != null)
-                    FadeManager.Instance.FadeToScene(currentScene);
+                if (fadeManager != null)
+                    fadeManager.FadeToScene(currentScene);
                 else
                     SceneManager.LoadScene(currentScene);
                 break;
@@ -58,5 +68,20 @@ public class GhostMenuController : MonoBehaviour
                 #endif
                 break;
         }
+    }
+
+    // VRFadeManager를 찾는 메서드
+    private VRFadeManager GetVRFadeManager()
+    {
+        // 먼저 메인 카메라에서 찾기
+        if (Camera.main != null)
+        {
+            VRFadeManager fadeManager = Camera.main.GetComponent<VRFadeManager>();
+            if (fadeManager != null)
+                return fadeManager;
+        }
+
+        // 메인 카메라에 없다면 씬에서 찾기
+        return FindObjectOfType<VRFadeManager>();
     }
 }

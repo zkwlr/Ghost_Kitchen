@@ -2834,8 +2834,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.0098178685, z: -0, w: -0.99995184}
   m_LocalPosition: {x: -125, y: 172, z: 30}
-  m_LocalScale: {x: 882.99176, y: 441.49585, z: 441.49588}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: -882.9918, y: 441.49585, z: 441.49588}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1133935034}
   m_Father: {fileID: 1035508192}
@@ -17745,7 +17745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7533c334f7316b3418de2a49ccca0005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 10
+  gameDuration: 120
   wellHealth: {fileID: 2104769386}
   gameResultSceneName: ResultScene
   recordFileName: records.json
@@ -20467,7 +20467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -222}
+  m_AnchoredPosition: {x: 2, y: -200}
   m_SizeDelta: {x: 1000, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1825216495
@@ -20483,7 +20483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9339623, g: 0.44973636, b: 0.12775902, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
