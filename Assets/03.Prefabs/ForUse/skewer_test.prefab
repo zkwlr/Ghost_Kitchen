@@ -344,6 +344,7 @@ MonoBehaviour:
   availableSlotMaterial: {fileID: 0}
   occupiedSlotMaterial: {fileID: 0}
   autoUpdateBounds: 0
+  foodStickSound: {fileID: 8300000, guid: 07dd4d8f847f3744180a9d0f73e762e3, type: 3}
 --- !u!82 &-2137273846002806295
 AudioSource:
   m_ObjectHideFlags: 0
