@@ -8410,6 +8410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recordText: {fileID: 833298255}
+  recordFileName: records.json
 --- !u!114 &833298255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10074,8 +10075,18 @@ PrefabInstance:
     - {fileID: 8449448547779493611, guid: 5b664c6dfde0508448041fae6258e625, type: 3}
     - {fileID: 2526921645222880322, guid: 5b664c6dfde0508448041fae6258e625, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2601280810006690432, guid: 5b664c6dfde0508448041fae6258e625,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1118326803}
   m_SourcePrefab: {fileID: 100100000, guid: 5b664c6dfde0508448041fae6258e625, type: 3}
+--- !u!1 &977743092 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2601280810006690432, guid: 5b664c6dfde0508448041fae6258e625,
+    type: 3}
+  m_PrefabInstance: {fileID: 977743091}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &992716758
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11548,6 +11559,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 977743091}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1118326803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977743092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f719a0cdb68cd429a03235e8443873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeCubePrefab: {fileID: 5250508702806031406, guid: 5f2c12665a4dd594b9969b4a149a5e27,
+    type: 3}
+  fadeDuration: 2
 --- !u!1001 &1120266679
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5816899046188936403}
   - component: {fileID: 6517145761225667110}
   - component: {fileID: 4746178510720085033}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FadeOutCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
