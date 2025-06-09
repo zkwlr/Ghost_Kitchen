@@ -137,6 +137,7 @@ MonoBehaviour:
   baseScore: 3
   diversityBonusPerType: 1
   showDebugMessages: 1
+  disappearSound: {fileID: 8300000, guid: 52813c892a2b25a4d9247b8f65feeaab, type: 3}
 --- !u!1 &7467521754970179974
 GameObject:
   m_ObjectHideFlags: 0
