@@ -3662,6 +3662,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3103728, y: 0.71568006, z: 0.86745864}
   m_Center: {x: -0.00000017881393, y: 0.35783997, z: 0.00000002980232}
+--- !u!1 &336597113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2601280810006690432, guid: 5b664c6dfde0508448041fae6258e625,
+    type: 3}
+  m_PrefabInstance: {fileID: 977743091}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &337141861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4041,7 +4047,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 31
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 63a3c08de94a82f43903cdabe1c78ed5, type: 2}
   m_TargetDisplay: 0
@@ -10555,7 +10561,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1825216494}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2601280810006690432, guid: 5b664c6dfde0508448041fae6258e625,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1118326803}
   m_SourcePrefab: {fileID: 100100000, guid: 5b664c6dfde0508448041fae6258e625, type: 3}
 --- !u!224 &977743092 stripped
 RectTransform:
@@ -12262,6 +12272,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 977743091}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1118326803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336597113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f719a0cdb68cd429a03235e8443873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeCubePrefab: {fileID: 5250508702806031406, guid: 5f2c12665a4dd594b9969b4a149a5e27,
+    type: 3}
+  fadeDuration: 1.5
 --- !u!1001 &1120266679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16551,7 +16576,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -413, y: 218}
+  m_AnchoredPosition: {x: -413, y: 220.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1471092768

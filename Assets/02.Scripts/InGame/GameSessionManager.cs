@@ -100,8 +100,13 @@ public class GameSessionManager : MonoBehaviour
         // 1) 점수/시간/날짜를 기록에 남긴다
         SaveRecord();
 
-        // 2) 결과 씬으로 전환
-        SceneManager.LoadScene(gameResultSceneName);
+        // VRFadeManager를 찾아서 씬 전환
+        VRFadeManager fadeManager = GetVRFadeManager();
+
+        if (fadeManager != null)
+            fadeManager.FadeToScene(gameResultSceneName);
+        else
+            SceneManager.LoadScene(gameResultSceneName);
     }
 
     private void OnDestroy()
@@ -189,5 +194,20 @@ public class GameSessionManager : MonoBehaviour
     public List<GameRecord> GetAllRecords()
     {
         return LoadRecordList().records;
+    }
+
+    // VRFadeManager를 찾는 메서드
+    private VRFadeManager GetVRFadeManager()
+    {
+        // 먼저 메인 카메라에서 찾기
+        if (Camera.main != null)
+        {
+            VRFadeManager fadeManager = Camera.main.GetComponent<VRFadeManager>();
+            if (fadeManager != null)
+                return fadeManager;
+        }
+
+        // 메인 카메라에 없다면 씬에서 찾기
+        return FindObjectOfType<VRFadeManager>();
     }
 }
