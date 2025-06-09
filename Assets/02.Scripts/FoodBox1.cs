@@ -101,6 +101,7 @@ public class IngredientBox : MonoBehaviour
             }
         }
 
+        
         lastSpawnTime = Time.time;
         canSpawn = false;
         Invoke(nameof(ResetSpawnCooldown), spawnCooldown);
