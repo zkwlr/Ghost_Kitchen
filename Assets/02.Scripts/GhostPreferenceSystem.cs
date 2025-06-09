@@ -33,6 +33,8 @@ public class GhostPreferenceSystem : MonoBehaviour
     private float originalSpeed;
     private int originalDamage;
     private float originalAttackInterval;
+    public AudioClip disappearSound;
+
 
     void Start()
     {
@@ -71,8 +73,8 @@ public class GhostPreferenceSystem : MonoBehaviour
         {
             IngredientItem ingredientItem = child.GetComponent<IngredientItem>();
             if (ingredientItem != null)
-            { 
-                ingredients.Add(ingredientItem.ingredientType.ToString()); 
+            {
+                ingredients.Add(ingredientItem.ingredientType.ToString());
             }
         }
 
@@ -84,7 +86,7 @@ public class GhostPreferenceSystem : MonoBehaviour
         int favoriteCount = 0;
         int hatedCount = 0;
         int totalIngredients = ingredients.Count;
-        
+
         // 재료 다양성 계산
         HashSet<string> uniqueIngredients = new HashSet<string>(ingredients);
         int diversityCount = uniqueIngredients.Count;
@@ -110,7 +112,7 @@ public class GhostPreferenceSystem : MonoBehaviour
             // 안내문 표시
             if (GuideText.Instance != null)
             {
-            GuideText.Instance.ShowInsufficientIngredientsMessage();
+                GuideText.Instance.ShowInsufficientIngredientsMessage();
             }
             // 조건: 재료가 3개 미만이면 화남
             BecomeAngry();
@@ -149,9 +151,11 @@ public class GhostPreferenceSystem : MonoBehaviour
 
             Destroy(skewer);
 
+
             if (gameObject.CompareTag("LG"))
             {
-                Destroy(gameObject); // LG_01
+                Disappear(); // LG_01
+
                 if (gfa != null)
                 {
                     // ScoreManager 싱글톤을 통해 점수 추가
@@ -189,16 +193,16 @@ public class GhostPreferenceSystem : MonoBehaviour
     private int CalculateDiversityScore(List<string> ingredients, GhostFollowAndAttack gfa)
     {
         int baseGhostScore = (gfa != null) ? gfa.GetScoreValue() : baseScore;
-        
+
         // 재료 종류 다양성 계산
         HashSet<string> uniqueIngredients = new HashSet<string>(ingredients);
         int diversityCount = uniqueIngredients.Count;
-        
+
         // 간단한 다양성 보너스 계산
         int diversityBonus = (diversityCount - 1) * diversityBonusPerType; // 첫 번째 재료는 기본
-        
+
         int finalScore = baseGhostScore + diversityBonus;
-        
+
         if (showDebugMessages)
         {
             Debug.Log($"=== 간단 점수 계산 ===");
@@ -206,7 +210,7 @@ public class GhostPreferenceSystem : MonoBehaviour
             Debug.Log($"다양성 보너스: {diversityBonus} (재료 종류: {diversityCount}개)");
             Debug.Log($"최종 점수: {finalScore}");
         }
-        
+
         return finalScore;
     }
 
@@ -232,7 +236,7 @@ public class GhostPreferenceSystem : MonoBehaviour
     }
     private void BecomeSatisfied()
     {
-        
+
     }
 
     private void CreateEffects(GameObject[] effects)
@@ -247,5 +251,24 @@ public class GhostPreferenceSystem : MonoBehaviour
                 }
             }
         }
+    }
+    
+    public void Disappear()
+    {
+        // 1. 임시 오디오 오브젝트 생성
+        GameObject tempAudio = new GameObject("TempAudio_Disappear");
+        AudioSource tempSource = tempAudio.AddComponent<AudioSource>();
+
+        // 2. 사운드 세팅 (필요하면 3D 설정 등도 여기서)
+        tempSource.clip = disappearSound;
+        tempSource.spatialBlend = 1.0f; // 3D 사운드 (필요에 따라 0~1)
+        tempSource.transform.position = transform.position; // 유령 위치에서 재생
+        tempSource.Play();
+
+        // 3. 사운드가 끝나면 임시 오브젝트 삭제
+        Destroy(tempAudio, disappearSound.length);
+
+        // 4. 유령 오브젝트 즉시 삭제
+        Destroy(gameObject);
     }
 }

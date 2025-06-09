@@ -24,6 +24,7 @@ public class SkewerController : MonoBehaviour
     private XRGrabInteractable skewerGrab;
     private Rigidbody skewerRigidbody;
     private BoxCollider physicsCollider;
+    public AudioClip foodStickSound;
 
     void Start()
     {
@@ -186,6 +187,13 @@ public class SkewerController : MonoBehaviour
 
         Collider col = newIngredient.GetComponent<Collider>();
         if (col != null) Destroy(col);
+
+        // ★ 꼬치에 재료가 복사되어 꽂힐 때 소리 재생!
+        var audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && foodStickSound != null)
+        {
+            audioSource.PlayOneShot(foodStickSound);
+        }
 
         return newIngredient;
     }
