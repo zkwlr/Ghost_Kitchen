@@ -5,11 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Well
+  - LG
+  - Skewer
+  - floor
+  - Plate
+  - Food
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - HUD
   - Water
   - UI
   - 
