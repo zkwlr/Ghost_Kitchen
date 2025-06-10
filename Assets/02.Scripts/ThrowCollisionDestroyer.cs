@@ -31,7 +31,7 @@ public class ThrowCollisionDestroyer : MonoBehaviour
         if (attachedCount < requiredItemCount)
         {
             Debug.Log($"[Destroyer] 현재 부착된 아이템 수 {attachedCount}개 (필요: {requiredItemCount}개)");
-            return;
+            // return; // 꼬치가 완성되지 않아도 Scene 전환될 수 있게 변경
         }
 
         // ─── 폭발 이펙트를 배열에 담긴 모든 프리팹으로 생성 ───
@@ -67,7 +67,7 @@ public class ThrowCollisionDestroyer : MonoBehaviour
             }
             else
             {
-                Debug.Log("[Destroyer] 메인 메뉴 충돌");
+                Debug.Log("[Destroyer] 메뉴 항목 고스트 충돌, Scene 전환");
             }
 
         }
